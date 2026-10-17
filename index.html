@@ -1,0 +1,1473 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>بلانر بيتي</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="بلانر رقمي للبيت: تنظيف، مطبخ، ميزانية، أطفال ومواعيد — بالعربي.">
+<meta name="theme-color" content="#eff3f1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1613" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="بلانر بيتي">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: phone-width column. Sticky pill tabs per section, white cards on a cool sage ground, fixed bottom nav with a "more" sheet. */
+:root {
+  --bg: #eff3f1;
+  --surface: #ffffff;
+  --ink: #1d2b26;
+  --muted: #7a8a83;
+  --chip: #e4eae7;
+  --chip-2: #cbd6d1;
+  --line: #dfe5e2;
+  --accent: #1b5e50;
+  --accent-ink: #ffffff;
+  --tint: #dfeee7;
+  --box: #f6f8f7;
+  --box-line: #d5ddd9;
+  --mint: #d8eee4;
+  --mint-ink: #25483d;
+  --note-bg: #f1e3ca;
+  --note-ink: #7b5b2b;
+  --amber: #b8801f;
+  --amber-bg: #f6e7c8;
+  --ok: #2d8a64;
+  --bad: #b5483b;
+  --rose: #a8465f;
+  --rose-bg: #f8dde4;
+  --rose-ink: #8a3550;
+  --rose-line: #f0cfd8;
+  --hero: #1d6a5c;
+  --hero-2: #16574b;
+  --shadow: rgba(27, 94, 80, 0.45);
+  --font: 'Cairo', system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1613; --surface: #16211d; --ink: #e7efec; --muted: #8fa39b; --chip: #202e29; --chip-2: #36483f;
+    --line: #243530; --accent: #2a8670; --accent-ink: #ffffff; --tint: #1d3a31; --box: #1a2823;
+    --box-line: #31453e; --mint: #1a3a30; --mint-ink: #cfe8dd; --note-bg: #3a2f1c; --note-ink: #e4c991;
+    --amber: #d6a047; --amber-bg: #3b3019; --ok: #3aa377; --bad: #e5897c; --rose: #c45d79;
+    --rose-bg: #3d2430; --rose-ink: #f0b6c6; --rose-line: #583543; --hero: #174d43; --hero-2: #103a33;
+    --shadow: rgba(0, 0, 0, 0.55); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1613; --surface: #16211d; --ink: #e7efec; --muted: #8fa39b; --chip: #202e29; --chip-2: #36483f;
+  --line: #243530; --accent: #2a8670; --accent-ink: #ffffff; --tint: #1d3a31; --box: #1a2823;
+  --box-line: #31453e; --mint: #1a3a30; --mint-ink: #cfe8dd; --note-bg: #3a2f1c; --note-ink: #e4c991;
+  --amber: #d6a047; --amber-bg: #3b3019; --ok: #3aa377; --bad: #e5897c; --rose: #c45d79;
+  --rose-bg: #3d2430; --rose-ink: #f0b6c6; --rose-line: #583543; --hero: #174d43; --hero-2: #103a33;
+  --shadow: rgba(0, 0, 0, 0.55); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.5;
+  direction: rtl; -webkit-tap-highlight-color: transparent;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg);
+}
+button, input, select { font-family: inherit; font-size: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; padding: 0; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.shell {
+  max-width: 520px; margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 120px;
+}
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.stack > * { min-width: 0; }
+
+/* tabs and chips */
+.tabs {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+  display: flex; gap: 10px; overflow-x: auto; padding-block: 14px 12px; scrollbar-width: none;
+}
+.tabs.static { position: static; padding-block: 4px 0; }
+.tabs::-webkit-scrollbar, .scroll-row::-webkit-scrollbar { display: none; }
+.tab {
+  flex: none; height: 44px; padding: 0 22px; border-radius: 99px; background: var(--chip);
+  color: var(--muted); font-weight: 600; white-space: nowrap;
+}
+.tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 18px -8px var(--shadow); }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.scroll-row { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+.chip {
+  flex: none; min-height: 42px; padding: 0 20px; border-radius: 99px; background: var(--chip); color: var(--muted);
+  font-weight: 500; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; border: 2px solid transparent;
+}
+.chip.room[aria-pressed="true"] { background: var(--tint); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.chip.freq[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.chip .cnt { font-size: 13px; opacity: .85; font-variant-numeric: tabular-nums; }
+.chip.danger { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 35%, transparent); background: var(--surface); }
+.chip.outline { background: var(--surface); border-color: var(--box-line); color: var(--ink); font-weight: 600; }
+.chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.chip[aria-pressed="true"] .dot { background: var(--accent-ink); }
+.chip svg { width: 16px; height: 16px; }
+
+/* cards + headers */
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 26px; padding: 18px;
+  display: flex; flex-direction: column; gap: 14px; min-width: 0;
+}
+.sec-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 46px; }
+.sec-title { font-size: 22px; font-weight: 700; min-width: 0; line-height: 1.3; }
+.sec-title.muted { font-size: 15px; font-weight: 500; color: var(--muted); }
+.sec-sub { color: var(--muted); font-size: 15px; margin-top: -8px; }
+.pill-btn {
+  height: 44px; padding: 0 22px; border-radius: 16px; background: var(--surface);
+  border: 1px solid var(--box-line); font-weight: 600; flex: none;
+}
+.pill-btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.outer-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.outer-head .lbl { color: var(--muted); font-size: 15px; font-weight: 500; }
+.hint { color: var(--muted); font-size: 14.5px; }
+
+/* inputs */
+.inp {
+  width: 100%; min-width: 0; height: 52px; padding: 0 16px; border-radius: 17px; border: 1px solid var(--box-line);
+  background: var(--surface); outline: none; appearance: none; -webkit-appearance: none;
+}
+.inp::placeholder { color: var(--muted); opacity: .85; }
+.inp:focus { border-color: var(--accent); }
+select.inp {
+  padding-inline-end: 38px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat;
+  direction: rtl;
+}
+[dir="rtl"] select.inp { background-position: 20px 50%, 14px 50%; }
+.num { font-variant-numeric: tabular-nums; direction: ltr; text-align: right; }
+.add-row { display: flex; gap: 12px; align-items: center; }
+.add-row .inp { flex: 1; }
+.add-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.add-grid .grow { grid-column: 1 / -1; }
+.btn-sq {
+  flex: none; width: 54px; height: 54px; border-radius: 18px; background: var(--ck, var(--accent));
+  color: var(--accent-ink); display: grid; place-items: center;
+}
+.btn-sq svg { width: 24px; height: 24px; }
+.btn-wide {
+  width: 100%; min-height: 54px; border-radius: 18px; background: var(--accent); color: var(--accent-ink);
+  font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-wide.outline { background: var(--surface); color: var(--ink); border: 1px solid var(--box-line); font-weight: 600; }
+.btn-wide svg { width: 22px; height: 22px; }
+
+/* tasks / checklists */
+.tasks { list-style: none; margin: 0; padding: 0; }
+.task { display: flex; align-items: center; gap: 16px; min-height: 62px; padding-block: 8px; border-bottom: 1px solid var(--line); }
+.task:last-child { border-bottom: 0; }
+.check {
+  flex: none; width: 46px; height: 46px; border-radius: 14px; border: 1.5px solid var(--ck-line, var(--box-line));
+  background: var(--box); display: grid; place-items: center; color: var(--accent-ink);
+}
+.check svg { width: 22px; height: 22px; opacity: 0; }
+.check[aria-checked="true"] { background: var(--ck, var(--accent)); border-color: var(--ck, var(--accent)); }
+.check[aria-checked="true"] svg { opacity: 1; }
+.task-text { flex: 1; min-width: 0; font-size: 17px; font-weight: 500; overflow-wrap: anywhere; }
+.task-text .tag { color: var(--muted); font-size: 14px; font-weight: 400; }
+.task.done .task-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.task-text .inp { height: 42px; border-radius: 12px; font-weight: 500; }
+.del {
+  flex: none; width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: var(--bad);
+  background: var(--box); border: 1px solid var(--box-line);
+}
+.del.sm { width: 38px; height: 38px; border-radius: 12px; }
+.del svg { width: 20px; height: 20px; }
+.del.sm svg { width: 17px; height: 17px; }
+.empty { color: var(--muted); text-align: center; padding: 22px 8px; }
+.rose { --ck: var(--rose); --ck-line: var(--rose-line); }
+
+/* banners */
+.note {
+  background: var(--note-bg); color: var(--note-ink); border-radius: 20px; padding: 16px 18px; display: flex; gap: 12px;
+  align-items: flex-start; font-weight: 500; font-size: 15px;
+}
+.note svg { flex: none; width: 22px; height: 22px; margin-top: 2px; }
+.note.mint { background: var(--mint); color: var(--mint-ink); font-size: 16.5px; line-height: 1.75; }
+.note.mint b { color: var(--ink); }
+.note.pinky { background: var(--rose-bg); color: var(--rose-ink); display: block; padding: 20px; }
+.note.pinky h2 { margin: 0 0 6px; font-size: 24px; line-height: 1.5; font-weight: 700; }
+.note.pinky p { margin: 0; color: var(--ink); font-weight: 500; font-size: 16px; }
+
+/* bottom nav + sheet */
+.nav {
+  position: fixed; inset: auto 0 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line);
+  padding-top: 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px));
+}
+.nav-in { max-width: 520px; margin-inline: auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.nav button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 2px; border-radius: 16px; color: var(--muted); font-size: 12.5px; font-weight: 600; }
+.nav button svg { width: 24px; height: 24px; }
+.nav button[aria-current="page"] { color: var(--accent); background: var(--tint); }
+.scrim { position: fixed; inset: 0; z-index: 40; background: rgba(10, 20, 17, .45); display: flex; align-items: flex-end; justify-content: center; }
+.sheet {
+  width: 100%; max-width: 520px; background: var(--surface); border-radius: 28px 28px 0 0; padding: 12px 14px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+}
+.sheet .grab { width: 44px; height: 5px; border-radius: 99px; background: var(--chip); margin: 0 auto 14px; }
+.sheet-item { width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px; border-radius: 18px; font-size: 18px; font-weight: 600; text-align: start; }
+.sheet-item svg { width: 24px; height: 24px; color: var(--muted); }
+.sheet-item[aria-current="page"] { background: var(--tint); color: var(--accent); }
+.sheet-item[aria-current="page"] svg { color: var(--accent); }
+.toast {
+  position: fixed; z-index: 50; left: 50%; transform: translateX(-50%); bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 99px; font-weight: 600; max-width: 90vw;
+}
+
+/* home */
+.hero {
+  position: relative; overflow: hidden; border-radius: 28px; color: #fff; margin-top: 14px;
+  background: linear-gradient(140deg, var(--hero), var(--hero-2));
+}
+.hero .pat { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-in { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 22px 20px; }
+.hero-txt { min-width: 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.hello { font-size: 15px; opacity: .85; }
+.hero h1 { margin: 0; font-size: 22px; line-height: 1.3; font-weight: 700; }
+.hero .pill { background: rgba(255, 255, 255, .16); border-radius: 99px; padding: 6px 16px; font-size: 15px; font-weight: 600; }
+.ring { position: relative; width: 98px; height: 98px; flex: none; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring .lab { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.25; }
+.ring b { font-size: 22px; font-variant-numeric: tabular-nums; }
+.ring small { font-size: 11.5px; opacity: .9; }
+.agenda-title { display: flex; align-items: baseline; justify-content: space-between; margin-top: 6px; }
+.agenda-title h2 { margin: 0; font-size: 24px; font-weight: 700; }
+.group { padding-block: 4px; }
+.group + .group { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 14px; }
+.g-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.g-head .t { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--accent); font-size: 17px; }
+.g-head .t svg { width: 22px; height: 22px; }
+.g-head .open { display: flex; align-items: center; color: var(--muted); font-size: 15px; gap: 2px; }
+.g-head .open svg { width: 16px; height: 16px; }
+.row-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: start; padding-block: 10px; min-height: 62px; }
+.row-link .t { font-size: 17px; font-weight: 600; }
+.row-link .s { color: var(--muted); font-size: 14px; }
+.row-link svg { width: 18px; height: 18px; color: var(--muted); }
+
+/* stock */
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg button { padding: 7px 18px; border-radius: 14px; background: var(--chip); color: var(--muted); font-weight: 500; }
+.seg button.s-ok[aria-pressed="true"] { background: var(--ok); color: #fff; font-weight: 600; }
+.seg button.s-low[aria-pressed="true"] { background: var(--amber); color: #fff; font-weight: 600; }
+.seg button.s-out[aria-pressed="true"] { background: var(--bad); color: #fff; font-weight: 600; }
+.item-block { padding-block: 14px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
+.item-block:last-child { border-bottom: 0; }
+.item-name { font-size: 20px; font-weight: 700; }
+.cat-lbl { color: var(--muted); font-size: 15px; }
+.tag-pill { align-self: flex-start; background: var(--amber-bg); color: var(--note-ink); font-weight: 600; border-radius: 99px; padding: 6px 18px; }
+.big { font-size: 34px; font-weight: 700; line-height: 1.2; font-variant-numeric: tabular-nums; }
+
+/* meals table */
+.table-wrap { overflow-x: auto; margin-inline: -4px; padding-inline: 4px; }
+table.meals { border-collapse: separate; border-spacing: 8px 10px; min-width: 100%; }
+.meals th { color: var(--muted); font-weight: 500; font-size: 14.5px; text-align: start; padding: 0 4px; }
+.meals td.day { font-weight: 700; white-space: nowrap; padding-inline: 4px; }
+.meals td.day.today { color: var(--accent); }
+.meals .cell { min-width: 150px; height: 48px; border-radius: 14px; border: 2px solid transparent; background: var(--chip); padding: 0 14px; outline: none; width: 100%; }
+.meals .cell:focus { background: var(--surface); border-color: var(--accent); }
+
+/* bank / shop / money */
+.time-pill { background: var(--chip); color: var(--muted); border-radius: 99px; padding: 4px 16px; font-size: 15px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.place-btn { align-self: flex-start; padding: 10px 22px; border-radius: 16px; background: var(--chip); font-weight: 600; }
+.place-panel { background: var(--box); border: 1px solid var(--box-line); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.price { color: var(--muted); font-variant-numeric: tabular-nums; flex: none; min-width: 44px; text-align: start; }
+.price-inp { width: 96px; height: 42px; border-radius: 12px; padding: 0 10px; }
+.shop-total { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.shop-total .k { color: var(--muted); font-size: 15px; }
+.shop-total .v { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.v-ok { color: var(--ok); } .v-bad { color: var(--bad); } .v-amber { color: var(--amber); }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px 18px; }
+.stat .k { color: var(--muted); font-size: 15px; }
+.stat .v { font-size: 34px; font-weight: 700; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.month-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; }
+.month-bar .m { font-weight: 700; font-size: 20px; }
+.month-bar button { width: 40px; height: 40px; border-radius: 12px; background: var(--surface); border: 1px solid var(--box-line); display: grid; place-items: center; }
+.month-bar svg { width: 18px; height: 18px; }
+.frow { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-block: 10px; border-bottom: 1px solid var(--line); }
+.frow:last-child { border-bottom: 0; }
+.frow > label { color: var(--muted); flex: none; width: 34%; }
+.frow .inp { height: 46px; border-radius: 16px; }
+.frow .amt { width: 112px; height: 46px; border-radius: 14px; }
+.ex-row { display: flex; align-items: center; gap: 10px; padding-block: 8px; border-bottom: 1px solid var(--line); }
+.ex-row:last-child { border-bottom: 0; }
+.ex-row .nm { flex: 1; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.ex-row .nm small { display: block; color: var(--muted); font-weight: 400; font-size: 13px; }
+.ex-row .a { font-weight: 700; font-variant-numeric: tabular-nums; }
+.badge { font-size: 12.5px; font-weight: 700; padding: 2px 12px; border-radius: 99px; background: var(--chip); color: var(--muted); white-space: nowrap; }
+.badge.warn { background: var(--amber-bg); color: var(--note-ink); }
+.badge.late { background: var(--bad); color: #fff; }
+.mini-btn { padding: 8px 16px; border-radius: 12px; background: var(--tint); color: var(--accent); font-weight: 700; flex: none; }
+.bar { height: 10px; border-radius: 99px; background: var(--chip); overflow: hidden; }
+.bar > i { display: block; height: 100%; border-radius: 99px; background: var(--ck, var(--accent)); }
+.goal-top { display: flex; align-items: baseline; gap: 10px; }
+.goal-top .of { color: var(--muted); }
+.goal-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); }
+.goal-foot .add-row { flex: none; width: 52%; }
+.goal-foot .inp { height: 46px; border-radius: 14px; }
+.goal-foot .btn-sq { width: 46px; height: 46px; border-radius: 14px; }
+
+/* kids */
+.avatar { width: 58px; height: 58px; border-radius: 17px; background: var(--tint); color: var(--accent); display: grid; place-items: center; font-size: 26px; font-weight: 700; flex: none; }
+.kid-head { display: flex; align-items: center; gap: 14px; }
+.kid-head .nm { flex: 1; min-width: 0; }
+.kid-head .nm input { width: 100%; border: 0; background: none; font-size: 22px; font-weight: 700; outline: none; padding: 0; border-radius: 8px; }
+.kid-head .nm input:focus { background: var(--box); }
+.kid-head .sub { color: var(--muted); font-size: 15px; }
+.xbtn { color: var(--muted); width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; align-self: flex-start; }
+.xbtn svg { width: 20px; height: 20px; }
+.xbtn.confirm { color: #fff; background: var(--bad); width: auto; padding: 0 14px; font-size: 14px; font-weight: 700; }
+
+/* bags / calendar / water */
+.cal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cal-head .m { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.cal-grid .wd { text-align: center; color: var(--muted); font-size: 12.5px; padding-block: 2px; }
+.cal-grid .d {
+  aspect-ratio: 1; border-radius: 14px; background: var(--chip); display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 2px; font-weight: 500; font-variant-numeric: tabular-nums; border: 2px solid transparent; min-width: 0;
+}
+.cal-grid .d.today { color: var(--accent); font-weight: 700; }
+.cal-grid .d[aria-pressed="true"] { background: var(--tint); border-color: var(--accent); }
+.cal-grid .d i { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); display: block; }
+.cal-grid .d i.none { background: transparent; }
+.iso { color: var(--muted); letter-spacing: .5px; font-size: 15px; font-variant-numeric: tabular-nums; direction: ltr; text-align: right; }
+.water { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+.water button { height: 52px; border-radius: 16px; background: var(--chip); }
+.water button[aria-pressed="true"] { background: var(--accent); }
+.divider { height: 1px; background: var(--line); }
+.ev-days { background: var(--chip); color: var(--muted); border-radius: 99px; padding: 5px 16px; font-size: 14.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ev-days.soon { background: var(--amber-bg); color: var(--note-ink); }
+
+/* rooms: deep work */
+.back { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; color: var(--accent); font-weight: 700; padding: 8px 18px 8px 14px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
+.back svg { width: 18px; height: 18px; }
+.hero h1 input { width: 100%; background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .4); border-radius: 12px; color: #fff; font: inherit; font-size: 22px; font-weight: 700; padding: 2px 10px; outline: none; }
+.hero-txt:has(input) { flex: 1; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.room-card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; text-align: start; min-width: 0; box-shadow: 0 14px 28px -22px var(--shadow); }
+.room-card .bar { width: 100%; }
+.rc-name { font-size: 18px; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+.rc-meta { color: var(--muted); font-size: 14px; }
+.pri { display: inline-flex; align-items: center; font-size: 12.5px; font-weight: 700; padding: 2px 12px; border-radius: 99px; white-space: nowrap; flex: none; }
+.pri-high { background: color-mix(in srgb, var(--bad) 14%, var(--surface)); color: var(--bad); }
+.pri-mid { background: var(--amber-bg); color: var(--note-ink); }
+.pri-low { background: color-mix(in srgb, var(--ok) 14%, var(--surface)); color: var(--ok); }
+.pri-none { background: var(--chip); color: var(--muted); }
+.link-card { display: flex; align-items: center; gap: 14px; width: 100%; text-align: start; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 14px 16px; }
+.lc-ic { width: 44px; height: 44px; border-radius: 14px; background: var(--tint); color: var(--accent); display: grid; place-items: center; flex: none; }
+.lc-ic svg { width: 22px; height: 22px; }
+.lc-tx { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.lc-tx b { font-size: 17px; }
+.lc-tx small { color: var(--muted); font-size: 14px; }
+.link-card > svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+.dt-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.dt { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 14px 28px -24px var(--shadow); min-width: 0; }
+.dt.done .dt-title { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.dt-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.dt-title { font-size: 17.5px; font-weight: 700; min-width: 0; overflow-wrap: anywhere; line-height: 1.45; }
+.dt-note { margin: -4px 0 0; color: var(--muted); font-size: 14.5px; }
+.dt-foot { display: flex; align-items: center; }
+.link-btn { color: var(--accent); font-weight: 600; padding: 4px 2px; }
+.dt-edit { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 12px; }
+.dt-edit label { color: var(--muted); font-size: 14px; display: flex; flex-direction: column; gap: 6px; }
+.seg button.s-todo[aria-pressed="true"] { background: var(--chip-2); color: var(--ink); font-weight: 600; }
+.seg button.s-doing[aria-pressed="true"] { background: var(--amber); color: #fff; font-weight: 600; }
+.seg button.p-high[aria-pressed="true"] { background: var(--bad); color: #fff; font-weight: 600; }
+.seg button.p-mid[aria-pressed="true"] { background: var(--amber); color: #fff; font-weight: 600; }
+.seg button.p-low[aria-pressed="true"] { background: var(--ok); color: #fff; font-weight: 600; }
+
+/* backup card (me page) */
+textarea.inp { height: auto; min-height: 120px; padding: 12px 14px; resize: vertical; direction: ltr; text-align: left; font-size: 13px; line-height: 1.45; }
+.bk-note { color: var(--muted); font-size: 14.5px; margin: 0 0 14px; }
+.bk-area { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.bk-area .chips { margin: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .tab, .chip, .check, .seg button { transition: background-color .15s, color .15s, border-color .15s; }
+}
+</style>
+</head>
+<body>
+<div class="shell" dir="rtl" lang="ar">
+  <div id="app"></div>
+</div>
+<nav class="nav" id="nav" aria-label="التنقل الرئيسي"></nav>
+<div id="overlay"></div>
+<div id="toast" class="toast" role="status" hidden></div>
+<input type="file" id="bkfile" accept=".json,application/json,text/plain" hidden>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ====================== constants & helpers ====================== */
+  var FREQS = [
+    { id: 'daily', label: 'يومي', note: 'المهام اليومية بتتصفّر لوحدها كل يوم.' },
+    { id: 'weekly', label: 'أسبوعي', note: 'المهام الأسبوعية بتتصفّر لوحدها كل سبت.' },
+    { id: 'monthly', label: 'شهري', note: 'المهام الشهرية بتتصفّر لوحدها أول كل شهر.' },
+    { id: 'quarterly', label: 'كل ٣ شهور', note: 'المهام دي بتتصفّر لوحدها كل ٣ شهور.' }
+  ];
+  var MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+  var WD = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  var DAYS = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+  var MEALS = [['b', 'الفطار'], ['l', 'الغدا'], ['d', 'العشا']];
+  var STORE_CATS = ['سوبر ماركت', 'خضار وفاكهة', 'أطفال', 'صيدلية', 'حاجات تانية'];
+  var STOCK_CATS = ['مطبخ', 'نظافة', 'حمام', 'أطفال'];
+  var STORE_OF = { 'مطبخ': 'سوبر ماركت', 'نظافة': 'سوبر ماركت', 'حمام': 'سوبر ماركت', 'أطفال': 'أطفال' };
+  var BANK_CATS = ['اقتصادي', 'سريع', 'عائلي', 'للضيوف'];
+  var EXP_CATS = ['سوق', 'أكل', 'مواصلات', 'أطفال', 'صحة', 'ترفيه', 'تانية'];
+  var LS = 'baity-planner-v2', LS_UI = 'baity-planner-ui2';
+  var PRI = [['high', 'عالية'], ['mid', 'متوسطة'], ['low', 'منخفضة']], ST = [['todo', 'لسه'], ['doing', 'جاري'], ['done', 'تم']];
+  var PRI_L = { high: 'عالية', mid: 'متوسطة', low: 'منخفضة' }, PRI_CODE = { 'عالية': 'high', 'متوسطة': 'mid', 'منخفضة': 'low' }, PRI_RANK = { high: 0, mid: 1, low: 2 };
+  var KEEP_CONFIRM = { askdelkid: 1, delkid: 1, askdelbag: 1, delbag: 1, askddel: 1, ddel: 1, askdclear: 1, dclear: 1, askdelroomx: 1, delroomx: 1, bkapply: 1 };
+
+  var SECTIONS = {
+    home: { label: 'الرئيسية' },
+    house: { label: 'البيت', tabs: [['clean', 'التنظيف'], ['plan', 'خطة الأسبوع'], ['laundry', 'الغسيل'], ['stock', 'مخزون البيت'], ['maint', 'الصيانة'], ['organize', 'ترتيب'], ['rooms', 'غرف البيت']] },
+    kitchen: { label: 'المطبخ', tabs: [['meals', 'مخطط الوجبات'], ['bank', 'بنك الأكلات'], ['shop', 'قائمة المشتريات']] },
+    money: { label: 'الفلوس', tabs: [['budget', 'الميزانية'], ['expenses', 'المصاريف'], ['bills', 'الفواتير'], ['subs', 'الاشتراكات'], ['savings', 'الادخار']] },
+    kids: { label: 'أولادي' },
+    life: { label: 'حياتي', tabs: [['calendar', 'التقويم'], ['remember', 'لازم أفتكر'], ['events', 'المناسبات']] },
+    bags: { label: 'شنطتي' },
+    me: { label: 'أنا' }
+  };
+
+  function ic(d, extra) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (extra || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; }
+  var I = {
+    check: ic('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 3),
+    plus: ic('<path d="M12 5v14M5 12h14"/>', 2.5),
+    trash: ic('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M9 7V4h6v3"/>'),
+    x: ic('<path d="M6 6l12 12M18 6L6 18"/>', 2.2),
+    ring: ic('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/>'),
+    chevL: ic('<path d="M15 6l-6 6 6 6"/>'),
+    chevR: ic('<path d="M9 6l6 6-6 6"/>'),
+    home: ic('<path d="M3 11l9-8 9 8M5 10v10h14V10"/>'),
+    house: ic('<path d="M4 21V9l8-5 8 5v12M9 21v-6h6v6M2 21h20"/>'),
+    pot: ic('<path d="M4 11h16v3a6 6 0 01-6 6h-4a6 6 0 01-6-6v-3zM2 11h20M9 7c0-1.5 1-2 1-3.5M14 7c0-1.5 1-2 1-3.5"/>'),
+    wallet: ic('<path d="M3 7h15a3 3 0 013 3v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7zM3 7l12-4v4M16 14h3"/>'),
+    more: ic('<circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/>'),
+    users: ic('<path d="M9 11a3 3 0 100-6 3 3 0 000 6zM3 20c0-3 3-5 6-5s6 2 6 5M17 11a2.5 2.5 0 100-5M17 15c2.5 0 4.5 1.5 4.5 4"/>'),
+    cal: ic('<path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/>'),
+    bag: ic('<path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 016 0v2"/>'),
+    heart: ic('<path d="M12 20s-8-5-8-11a4.5 4.5 0 018-2.5A4.5 4.5 0 0120 9c0 6-8 11-8 11z"/>'),
+    bulb: ic('<path d="M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z"/>')
+  };
+  var NAV_ICON = { home: I.home, house: I.house, kitchen: I.pot, money: I.wallet, more: I.more, kids: I.users, life: I.cal, bags: I.bag, me: I.heart };
+
+  var uid = function () { return Math.random().toString(36).slice(2, 9); };
+  var pad = function (n) { return String(n).padStart(2, '0'); };
+  var iso = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var money = function (n) { return Number(n || 0).toLocaleString('en-US'); };
+  var west = function (s) { return String(s).replace(/[٠-٩]/g, function (d) { return d.charCodeAt(0) - 1632; }).replace(/[۰-۹]/g, function (d) { return d.charCodeAt(0) - 1776; }); };
+  var toNum = function (s) { var n = parseFloat(west(s).replace(/,/g, '')); return isFinite(n) ? n : 0; };
+  var sum = function (a, f) { return a.reduce(function (t, x) { return t + (+f(x) || 0); }, 0); };
+  var findId = function (a, id) { return a.filter(function (x) { return x.id === id; })[0]; };
+  var todayDate = function () { var d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+  var todayIdx = function () { return (new Date().getDay() + 1) % 7; };
+  var forRoom = function (name) { return 'ل' + (name.indexOf('ال') === 0 ? name.slice(1) : name); };
+  function periodKey(f) {
+    var d = new Date();
+    if (f === 'daily') return iso(d);
+    if (f === 'weekly') { var s = new Date(d); s.setDate(d.getDate() - ((d.getDay() + 1) % 7)); return 'w' + iso(s); }
+    if (f === 'monthly') return d.getFullYear() + '-' + pad(d.getMonth() + 1);
+    return d.getFullYear() + '-q' + Math.floor(d.getMonth() / 3);
+  }
+  function daysUntil(m, d) {
+    var t = todayDate(), dt = new Date(t.getFullYear(), m, d);
+    if (dt < t) dt = new Date(t.getFullYear() + 1, m, d);
+    return Math.round((dt - t) / 86400000);
+  }
+  function addMonths(isoStr, n) { var p = isoStr.split('-'); var d = new Date(+p[0], +p[1] - 1 + n, +p[2]); return d; }
+  function fullDate() { var d = new Date(); return WD[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear(); }
+
+  /* ====================== default content ====================== */
+  function T(arr) { return arr.map(function (t) { return { id: uid(), t: t, d: null }; }); }
+  function defaults() {
+    var now = todayDate();
+    var ago = function (days) { var d = new Date(now); d.setDate(d.getDate() - days); return iso(d); };
+    var ym = now.getFullYear() + '-' + pad(now.getMonth() + 1);
+    var rooms = [
+      { id: 'kitchen', name: 'المطبخ' }, { id: 'bath', name: 'الحمام' }, { id: 'bed', name: 'غرفة النوم' },
+      { id: 'living', name: 'الصالة' }, { id: 'kids', name: 'أوضة الأولاد' }, { id: 'balcony', name: 'البلكونة' }
+    ];
+    var tasks = {
+      'kitchen|daily': T(['غسل الأطباق', 'تنظيف الرخامة', 'تنظيف الحوض', 'مسح الأرضية', 'رفع الأكل في الثلاجة']),
+      'kitchen|weekly': T(['تنظيف البوتاجاز', 'مسح واجهات الدواليب', 'تنظيف الميكروويف', 'غسل سلة الزبالة']),
+      'kitchen|monthly': T(['تنضيف الفرن من جوه', 'ترتيب وتنظيف الثلاجة', 'تنضيف الشفاط']),
+      'kitchen|quarterly': T(['تنظيف الدواليب من جوه', 'إزالة الترسبات من الحنفيات', 'تنظيف ورا الأجهزة']),
+      'bath|daily': T(['غسل الحوض والمراية', 'تنشيف الأرضية', 'تفريغ سلة الزبالة']),
+      'bath|weekly': T(['تنظيف الحمّام والبانيو', 'غسل الأرضية بالمطهر', 'تغيير فوط الحمام']),
+      'bath|monthly': T(['تنظيف الدش والستارة', 'تنظيف فواصل البلاط']),
+      'bath|quarterly': T(['تنظيف الشفاط', 'تغيير ستارة الدش']),
+      'bed|daily': T(['ترتيب السرير', 'لمّ الهدوم المرمية']),
+      'bed|weekly': T(['تغيير ملايات السرير', 'مسح التراب', 'كنس ومسح الأرضية']),
+      'bed|monthly': T(['قلب المرتبة', 'تنظيف تحت السرير']),
+      'bed|quarterly': T(['تنظيف الدولاب من جوه', 'غسل المخدات واللحاف']),
+      'living|daily': T(['ترتيب الكنب والمخدات', 'لمّ الأغراض الفاضلة']),
+      'living|weekly': T(['مسح التراب', 'كنس ومسح الأرضية', 'تنظيف الترابيزة']),
+      'living|monthly': T(['شفط الكنب', 'تنظيف الشاشة والريموتات']),
+      'living|quarterly': T(['غسل الستاير', 'تنظيف الزجاج والشبابيك']),
+      'kids|daily': T(['ترتيب الألعاب', 'لمّ الهدوم']),
+      'kids|weekly': T(['تغيير ملايات سراير الأولاد', 'مسح التراب والأرضية']),
+      'kids|monthly': T(['فرز الألعاب والهدوم الصغيرة']),
+      'kids|quarterly': T(['غسل الستاير', 'تنظيف الدولاب من جوه']),
+      'balcony|daily': T(['كنس الأرضية', 'سقي النباتات']),
+      'balcony|weekly': T(['غسل أرضية البلكونة', 'مسح التراب من على الكراسي']),
+      'balcony|monthly': T(['تنظيف الزجاج والسور']),
+      'balcony|quarterly': T(['غسل مفروشات البلكونة'])
+    };
+    var P = function (t, tag) { return { id: uid(), t: t, tag: tag || '', d: null }; };
+    var plan = {
+      0: [P('تنظيف الحمّام بالكامل', 'الحمام · أسبوعي'), P('تغيير ملايات السرير', 'غرفة النوم · أسبوعي')],
+      1: [P('غسلة ألوان', 'غسيل'), P('مسح التراب في الصالة', 'الصالة · أسبوعي')],
+      2: [P('تنظيف البوتاجاز', 'المطبخ · أسبوعي')],
+      3: [P('شفط الأنتريه', 'الصالة · أسبوعي'), P('غسلة أبيض', 'غسيل')],
+      4: [P('غسل أرضية البلكونة', 'البلكونة · أسبوعي'), P('ترتيب الثلاجة', 'المطبخ · شهري')],
+      5: [P('هدوم المدرسة', 'غسيل'), P('تنظيف أوضة الأولاد', 'أوضة الأولاد · أسبوعي')],
+      6: [P('ترتيب الدواليب', 'ترتيب')]
+    };
+    var stock = [
+      { id: 's_rice', name: 'أرز', cat: 'مطبخ', st: 'ok' }, { id: 's_pasta', name: 'مكرونة', cat: 'مطبخ', st: 'low' },
+      { id: 's_sugar', name: 'سكر', cat: 'مطبخ', st: 'out' }, { id: 's_tea', name: 'شاي', cat: 'مطبخ', st: 'out' },
+      { id: 's_flour', name: 'دقيق', cat: 'مطبخ', st: 'ok' }, { id: 's_oil', name: 'زيت', cat: 'مطبخ', st: 'ok' },
+      { id: 's_det', name: 'مسحوق غسيل', cat: 'نظافة', st: 'out' }, { id: 's_dish', name: 'سائل أطباق', cat: 'نظافة', st: 'ok' },
+      { id: 's_tissue', name: 'مناديل', cat: 'حمام', st: 'ok' }, { id: 's_dia', name: 'حفاضات', cat: 'أطفال', st: 'out' }
+    ];
+    var shop = [
+      { id: uid(), name: 'لبن', cat: 'سوبر ماركت', price: 45, done: false }, { id: uid(), name: 'بيض', cat: 'سوبر ماركت', price: 110, done: false },
+      { id: uid(), name: 'سكر', cat: 'سوبر ماركت', price: 60, done: false, stockId: 's_sugar' }, { id: uid(), name: 'شاي', cat: 'سوبر ماركت', price: 0, done: false, stockId: 's_tea' },
+      { id: uid(), name: 'أرز', cat: 'سوبر ماركت', price: 0, done: false }, { id: uid(), name: 'دقيق', cat: 'سوبر ماركت', price: 0, done: false },
+      { id: uid(), name: 'مكرونة', cat: 'سوبر ماركت', price: 0, done: false, stockId: 's_pasta' }, { id: uid(), name: 'مسحوق غسيل', cat: 'سوبر ماركت', price: 0, done: false, stockId: 's_det' },
+      { id: uid(), name: 'خضار', cat: 'خضار وفاكهة', price: 180, done: true }, { id: uid(), name: 'حفاضات', cat: 'أطفال', price: 320, done: true, stockId: 's_dia' }
+    ];
+    var meals = {
+      0: { b: 'فول بالزيت', l: 'شاورما فراخ', d: 'جبنة وزيتون' }, 1: { b: 'عجّة بيض', l: 'ملوخية بالفراخ', d: 'سندوتشات' },
+      2: { b: 'بيض مسلوق', l: 'مكرونة بشاميل', d: 'زبادي وفاكهة' }, 3: { b: '', l: 'بامية باللحمة', d: 'بطاطس محمرة' },
+      4: { b: 'فطير ولبن', l: 'محشي كرنب', d: 'شوربة' }, 5: { b: '', l: '', d: '' }, 6: { b: '', l: '', d: '' }
+    };
+    return {
+      v: 2,
+      clean: { rooms: rooms, tasks: tasks },
+      plan: plan,
+      laundry: {
+        week: T(['غسلة أبيض', 'غسلة ألوان', 'هدوم المدرسة', 'ملايات ومفروشات', 'فوط', 'كي']),
+        closet: T(['ترتيب دولاب الأولاد', 'فرز الهدوم اللي مابقتش مقاسهم', 'ترتيب دولاب الأوضة'])
+      },
+      stock: stock,
+      maint: [
+        { id: uid(), t: 'تغيير فلتر المياه', every: 3, last: ago(70) }, { id: uid(), t: 'صيانة التكييف', every: 6, last: ago(150) },
+        { id: uid(), t: 'تنضيف خزان المياه', every: 6, last: ago(200) }, { id: uid(), t: 'فحص أنبوبة وخرطوم الغاز', every: 12, last: ago(120) }
+      ],
+      organize: [
+        { id: 'o1', title: 'الدواليب', items: T(['دولاب الأوضة', 'دولاب الأولاد', 'دولاب المطبخ']) },
+        { id: 'o2', title: 'الأدراج والرفوف', items: T(['درج المطبخ', 'درج الحمام', 'رف الأدوية']) }
+      ],
+      meals: meals,
+      bank: [
+        { id: uid(), name: 'كشري', cat: 'اقتصادي', min: 35 }, { id: uid(), name: 'عدس بجبة', cat: 'اقتصادي', min: 30 },
+        { id: uid(), name: 'مكرونة بالصلصة', cat: 'سريع', min: 20 }, { id: uid(), name: 'بيض بالبسطرمة', cat: 'سريع', min: 10 }
+      ],
+      shop: shop,
+      fin: {
+        income: 5000,
+        fixed: [
+          { id: uid(), t: 'إيجار', amt: 2500 }, { id: uid(), t: 'مصاريف المدرسة', amt: 1500 }, { id: uid(), t: 'كهرباء ومياه', amt: 400 },
+          { id: uid(), t: 'إنترنت', amt: 250 }, { id: uid(), t: 'موبايلات', amt: 200 }
+        ],
+        expenses: [],
+        bills: [
+          { id: uid(), t: 'فاتورة الكهرباء', amt: 400, day: 20, paid: '' }, { id: uid(), t: 'فاتورة الإنترنت', amt: 250, day: 5, paid: '' }
+        ],
+        subs: [{ id: uid(), t: 'نتفليكس', amt: 120 }, { id: uid(), t: 'أنغامي', amt: 60 }],
+        goals: [
+          { id: uid(), t: 'مصيف الصيف', saved: 4200, target: 10000 }, { id: uid(), t: 'غسالة جديدة', saved: 2500, target: 12000 }
+        ]
+      },
+      kids: [
+        { id: 'k1', name: 'يوسف', school: 'مدرسة النيل', grade: 'الصف الرابع', clothes: '10 سنين', shoe: '32', bd: '2017-03-14',
+          exp: [{ id: uid(), t: 'دروس', amt: 1200 }, { id: uid(), t: 'أتوبيس المدرسة', amt: 400 }, { id: uid(), t: 'مصروف', amt: 300 }] },
+        { id: 'k2', name: 'ملك', school: '', grade: '', clothes: '', shoe: '', bd: '', exp: [] }
+      ],
+      bags: [
+        { id: 'b1', name: 'شنطة السوق', items: T(['كيس قماش', 'المحفظة والفكة', 'لستة المشتريات', 'كيس تلج للفريزر']) },
+        { id: 'b2', name: 'شنطة الأولاد', items: T(['مناديل مبللة', 'ازازة مياه', 'سناكس', 'هدوم تغيير', 'كتاب أو لعبة صغيرة']) },
+        { id: 'b3', name: 'شنطة الدكتور', items: T(['كارنيه التأمين', 'الأشعة والتحاليل', 'ملف الحالة', 'فلوس وكارت', 'الأدوية الحالية']) },
+        { id: 'b4', name: 'شنطة بيت ماما', items: [{ id: uid(), t: 'هدوم تغيير للأولاد', d: true }, { id: uid(), t: 'لبن وسناكس', d: true }, { id: uid(), t: 'مناديل مبللة', d: true }, { id: uid(), t: 'الشاحن', d: true }] },
+        { id: 'b5', name: 'شنطة السفر', items: T(['البطاقات والجوازات', 'الشواحن', 'الأدوية', 'هدوم', 'أدوات النظافة الشخصية', 'فلوس']) }
+      ],
+      life: {
+        remember: [
+          { id: uid(), t: 'أكلم مدرسة يوسف بخصوص الغياب', d: false }, { id: uid(), t: 'أحجز عند دكتور الأسنان', d: false },
+          { id: uid(), t: 'أصلّح حنفية المطبخ', d: true }
+        ],
+        events: [{ id: uid(), t: 'عيد الجواز', m: 9, d: 22 }, { id: uid(), t: 'عيد ميلاد يوسف', m: 2, d: 14 }],
+        cal: (function () {
+          var o = {}; var add = function (day, t) { o[ym + '-' + pad(day)] = (o[ym + '-' + pad(day)] || []).concat([{ id: uid(), t: t }]); };
+          add(5, 'اجتماع أولياء الأمور'); add(12, 'قسط الجمعية'); add(20, 'ميعاد الكهرباء'); add(25, 'عيد ميلاد صاحبتي'); return o;
+        })()
+      },
+      me: {
+        did: T(['قهوة بهدوء', 'مشي', 'عناية بالبشرة', 'مسلسل', 'قراءة', 'خرجت مع صحابي', 'نمت بدري']),
+        routine: T(['أشرب مياه كفاية', 'أنام بدري', 'عناية بالبشرة', 'أتحرك ١٠ دقايق']),
+        water: { k: '', n: 0 }
+      }
+    };
+  }
+
+  /* ====================== deep-work seed, normalize, v1 migration ====================== */
+  function deepSeed() {
+    var D = function (t, pri, st) { return { id: uid(), t: t, pri: pri, st: st || 'todo', note: '' }; };
+    return {
+      kitchen: [D('تنضيف الفرن من جوه', 'high'), D('إزالة الدهون من الشفاط', 'mid', 'doing'), D('غسل الدواليب من جوه', 'low')],
+      bath: [D('إزالة الترسبات من الحنفيات والدش', 'high'), D('تنظيف فواصل البلاط بالفرشة', 'mid'), D('غسل ستارة الحمام', 'low', 'done')],
+      bed: [D('قلب المرتبة وتنظيفها', 'mid'), D('غسل المخدات واللحاف', 'high'), D('تنظيف تحت السرير وورا الدولاب', 'low')],
+      living: [D('شفط وتنظيف الكنب', 'high'), D('غسل الستاير', 'mid'), D('تنظيف الزجاج والشبابيك', 'mid')],
+      kids: [D('فرز الألعاب والتخلص من التالف', 'mid'), D('تعقيم الألعاب', 'high'), D('تنظيف الدولاب من جوه', 'low')],
+      balcony: [D('غسل أرضية البلكونة بالمطهر', 'mid'), D('تنظيف الزجاج والسور', 'low')]
+    };
+  }
+  function normalize(s) {
+    if (!s.deep || typeof s.deep !== 'object') s.deep = deepSeed();
+    s.clean.rooms.forEach(function (r) { if (!Array.isArray(s.deep[r.id])) s.deep[r.id] = []; });
+    return s;
+  }
+  function migrateV1(o) {
+    var b = defaults();
+    try {
+      if (Array.isArray(o.rooms) && o.rooms.length && o.rooms.every(function (r) { return r && r.id && r.name; }) && o.tasks && typeof o.tasks === 'object') {
+        var tk = {};
+        Object.keys(o.tasks).forEach(function (k) {
+          if (Array.isArray(o.tasks[k])) tk[k] = o.tasks[k].filter(function (t) { return t && t.id && t.t; }).map(function (t) { return { id: String(t.id), t: String(t.t), d: t.d || null }; });
+        });
+        b.clean.rooms = o.rooms.map(function (r) { return { id: String(r.id), name: String(r.name) }; }); b.clean.tasks = tk;
+      }
+      if (o.plan && typeof o.plan === 'object') {
+        for (var k = 0; k < 7; k++) if (Array.isArray(o.plan[k])) b.plan[k] = o.plan[k].filter(function (t) { return t && t.id && t.t; }).map(function (t) { return { id: String(t.id), t: String(t.t), tag: '', d: t.d || null }; });
+      }
+      /* stock: v1 kept a quantity, v2 keeps a status. Zero becomes "خلص", everything else "متوفر";
+         every non-available item gets its shopping-list entry, and the sample shopping rows are dropped. */
+      if (Array.isArray(o.stock) && o.stock.length) {
+        var catOf = function (n) { return /صابون|سائل|مسحوق|منظف|كلور|ديتول/.test(n) ? 'نظافة' : /مناديل|ورق|فوط/.test(n) ? 'حمام' : /حفاض/.test(n) ? 'أطفال' : 'مطبخ'; };
+        b.stock = o.stock.filter(function (s) { return s && s.id && s.name; }).map(function (s) {
+          return { id: String(s.id), name: String(s.name), cat: catOf(String(s.name)), st: +s.q === 0 ? 'out' : 'ok' };
+        });
+        b.shop = [];
+        b.stock.forEach(function (s) {
+          if (s.st !== 'ok') b.shop.push({ id: uid(), name: s.name, cat: STORE_OF[s.cat] || 'سوبر ماركت', price: 0, done: false, stockId: s.id });
+        });
+      }
+      /* laundry: v1 loads become checklist items next to the weekly defaults */
+      if (Array.isArray(o.laundry)) {
+        o.laundry.filter(function (l) { return l && l.id && l.name; }).forEach(function (l) { b.laundry.week.push({ id: String(l.id), t: String(l.name), d: null }); });
+      }
+    } catch (e) {}
+    return b;
+  }
+
+  /* ====================== state ====================== */
+  var S = null, seeded = false, migratedLocal = false;
+  try { var raw = localStorage.getItem(LS); if (raw) S = JSON.parse(raw); } catch (e) {}
+  if (!S || S.v !== 2) {
+    S = null;
+    try {
+      var old = localStorage.getItem('baity-planner-v1');
+      if (old) { var o1 = JSON.parse(old); if (o1 && Array.isArray(o1.rooms)) { S = migrateV1(o1); migratedLocal = true; } }
+    } catch (e) {}
+    if (!S) { S = defaults(); seeded = true; }
+  }
+  S = normalize(S);
+
+  var nowD = new Date();
+  var ui = {
+    sec: 'home', tabs: { house: 'clean', kitchen: 'meals', money: 'budget', life: 'calendar' }, room: null, freq: 'daily', day: todayIdx(),
+    edit: null, drafts: {}, sheet: false, confirm: '', placing: '', bag: null, kid: null, fy: nowD.getFullYear(), fm: nowD.getMonth(),
+    cy: nowD.getFullYear(), cm: nowD.getMonth(), cd: iso(nowD), focus: '', rp: null, et: '', df: 'all', dp: 'all'
+  };
+  try {
+    var u = JSON.parse(localStorage.getItem(LS_UI) || '{}');
+    if (u.sec && SECTIONS[u.sec]) ui.sec = u.sec;
+    if (u.tabs) for (var k in u.tabs) ui.tabs[k] = u.tabs[k];
+    if (u.room) ui.room = u.room;
+    if (u.freq) ui.freq = u.freq;
+    if (u.rp) ui.rp = u.rp;
+  } catch (e) {}
+  function saveUi() { try { localStorage.setItem(LS_UI, JSON.stringify({ sec: ui.sec, tabs: ui.tabs, room: ui.room, freq: ui.freq, rp: ui.rp })); } catch (e) {} }
+
+  var ref = null, lastJSON = JSON.stringify(S), saveTimer = null, writing = false, dirty = false;
+  function save() {
+    seeded = false;
+    lastJSON = JSON.stringify(S);
+    try { localStorage.setItem(LS, lastJSON); } catch (e) {}
+    clearTimeout(saveTimer); saveTimer = setTimeout(flush, 600);
+  }
+  function flush() {
+    saveTimer = null;
+    if (!ref) return;
+    if (writing) { dirty = true; return; }
+    writing = true;
+    ref.set({ state: lastJSON, at: Date.now() }).catch(function () {}).then(function () { writing = false; if (dirty) { dirty = false; flush(); } });
+  }
+  (function connect() {
+    try {
+      if (!window.claude || !window.claude.use) return;
+      window.claude.use('db').then(function (db) {
+        if (!db) return;
+        ref = db.doc('planner/main');
+        ref.onSnapshot(function (snap) {
+          if (!snap.exists || saveTimer || writing) return;
+          var j = snap.data().state;
+          if (typeof j !== 'string' || j === lastJSON) return;
+          try {
+            var next = JSON.parse(j);
+            if (next && next.v === 1 && seeded && Array.isArray(next.rooms)) { S = normalize(migrateV1(next)); save(); render(); return; }
+            if (!next || next.v !== 2) return;
+            S = normalize(next); seeded = false; lastJSON = j;
+            try { localStorage.setItem(LS, j); } catch (e) {}
+            render();
+          } catch (e) {}
+        }, function () {});
+      }).catch(function () {});
+    } catch (e) {}
+  })();
+
+  /* ====================== path access ====================== */
+  function step(o, k) { return Array.isArray(o) ? findId(o, k) : (o == null ? undefined : o[k]); }
+  function list(p) {
+    var ks = p.split('.'), last = ks.pop(), o = S;
+    ks.forEach(function (k) { o = step(o, k); });
+    if (!o[last]) o[last] = [];
+    return o[last];
+  }
+  function setPath(p, val) {
+    var ks = p.split('.'), last = ks.pop(), o = S;
+    ks.forEach(function (k) { o = step(o, k); });
+    if (o) o[last] = val;
+  }
+  function isDone(t, pk) { return pk === 'once' ? !!t.d : t.d === pk; }
+
+  /* ====================== ui kit ====================== */
+  function editBtn(key) { return '<button class="pill-btn" aria-pressed="' + (ui.edit === key) + '" data-act="edit" data-key="' + key + '">' + (ui.edit === key ? 'تم' : 'تعديل') + '</button>'; }
+  function head(title, key, muted) {
+    return '<div class="sec-head"><div class="sec-title' + (muted ? ' muted' : '') + '">' + title + '</div>' + (key ? editBtn(key) : '') + '</div>';
+  }
+  function outerHead(label, key) { return '<div class="outer-head"><span class="lbl">' + label + '</span>' + editBtn(key) + '</div>'; }
+  function D(k) { return ui.drafts[k] || ''; }
+  function inp(form, name, ph, extra) {
+    return '<input class="inp" name="' + name + '" data-draft="' + form + ':' + name + '" type="text" placeholder="' + esc(ph) + '" value="' + esc(D(form + ':' + name)) + '" autocomplete="off" ' + (extra || '') + '>';
+  }
+  function sel(form, name, opts, def) {
+    var v = D(form + ':' + name) || def || opts[0];
+    return '<select class="inp" name="' + name + '" data-draft="' + form + ':' + name + '">' + opts.map(function (o) { return '<option' + (o === v ? ' selected' : '') + '>' + esc(o) + '</option>'; }).join('') + '</select>';
+  }
+  function addRow(form, ph) {
+    return '<form class="add-row" data-form="' + form + '" autocomplete="off">' + inp(form, 't', ph, 'enterkeyhint="done" aria-label="' + esc(ph) + '"') +
+      '<button type="submit" class="btn-sq" aria-label="إضافة">' + I.plus + '</button></form>';
+  }
+  function note(text, cls, icon) { return '<div class="note ' + (cls || '') + '">' + (icon || I.ring) + '<span>' + text + '</span></div>'; }
+  function bind(path, val, extra) {
+    return 'data-bind="' + path + '" value="' + esc(val) + '" ' + (extra || '');
+  }
+  function checklist(path, o) {
+    o = o || {};
+    var L = list(path), pk = o.pk || 'once';
+    if (!L.length) return '<div class="empty">' + (o.empty || 'مفيش حاجة هنا لسه.') + '</div>';
+    return '<ul class="tasks">' + L.map(function (t) {
+      if (ui.edit === o.edit) {
+        return '<li class="task"><div class="task-text"><input class="inp" type="text" data-bind="' + path + '.' + t.id + '.t" value="' + esc(t.t) + '" aria-label="اسم المهمة"></div>' +
+          '<button class="del" data-act="del" data-path="' + path + '" data-id="' + t.id + '" aria-label="حذف">' + I.trash + '</button></li>';
+      }
+      var done = isDone(t, pk);
+      return '<li class="task' + (done ? ' done' : '') + '"><button class="check" role="checkbox" aria-checked="' + done + '" aria-label="' + esc(t.t) + '" data-act="toggle" data-path="' + path + '" data-id="' + t.id + '" data-pk="' + pk + '">' + I.check + '</button>' +
+        '<span class="task-text">' + esc(t.t) + (t.tag ? ' <span class="tag">· ' + esc(t.tag) + '</span>' : '') + '</span></li>';
+    }).join('') + '</ul>';
+  }
+  function bar(p) { return '<div class="bar" role="progressbar" aria-valuenow="' + Math.round(p) + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + Math.max(0, Math.min(100, p)) + '%"></i></div>'; }
+
+  /* ====================== stock ↔ shop sync ====================== */
+  function syncStock(it) {
+    var L = S.shop, i = L.findIndex(function (x) { return x.stockId === it.id; });
+    if (it.st === 'ok') { if (i > -1) L.splice(i, 1); }
+    else if (i < 0) L.push({ id: uid(), name: it.name, cat: STORE_OF[it.cat] || 'سوبر ماركت', price: 0, done: false, stockId: it.id });
+  }
+
+  /* ====================== finance helpers ====================== */
+  function monthKey() { return ui.fy + '-' + pad(ui.fm + 1); }
+  function spentOf(key) { return sum(S.fin.expenses.filter(function (e) { return e.date.slice(0, 7) === key; }), function (e) { return e.amt; }); }
+  function fixedTotal() { return sum(S.fin.fixed, function (f) { return f.amt; }); }
+  function remaining(key) { return S.fin.income - fixedTotal() - spentOf(key); }
+  function realMonthKey() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1); }
+  function shopTotal() { return sum(S.shop, function (s) { return s.price; }); }
+
+  /* ====================== pages: home ====================== */
+  function todayClean() {
+    var out = [], dk = periodKey('daily'), wk = periodKey('weekly');
+    S.clean.rooms.forEach(function (r) {
+      (S.clean.tasks[r.id + '|daily'] || []).forEach(function (t) { out.push({ t: t.t, tag: r.name, path: 'clean.tasks.' + r.id + '|daily', id: t.id, pk: dk, done: t.d === dk }); });
+    });
+    (S.plan[todayIdx()] || []).forEach(function (t) { out.push({ t: t.t, tag: t.tag, path: 'plan.' + todayIdx(), id: t.id, pk: wk, done: t.d === wk, plan: true }); });
+    return out;
+  }
+  function agendaRow(r) {
+    return '<li class="task' + (r.done ? ' done' : '') + '"><button class="check" role="checkbox" aria-checked="' + r.done + '" aria-label="' + esc(r.t) + '" data-act="toggle" data-path="' + r.path + '" data-id="' + r.id + '" data-pk="' + r.pk + '">' + I.check + '</button>' +
+      '<span class="task-text">' + esc(r.t) + (r.tag ? ' <span class="tag">· ' + esc(r.tag) + '</span>' : '') + '</span></li>';
+  }
+  function viewHome() {
+    var all = todayClean(), done = all.filter(function (x) { return x.done; }).length, pct = all.length ? Math.round(done / all.length * 100) : 0;
+    var daily = all.filter(function (x) { return !x.plan; }).slice(0, 3), plans = all.filter(function (x) { return x.plan; }).slice(0, 2);
+    var houseRows = daily.concat(plans);
+    var mealRows = MEALS.map(function (m) { var v = (S.meals[todayIdx()] || {})[m[0]]; return v ? { l: m[1], v: v } : null; }).filter(Boolean);
+    var remRows = S.life.remember.filter(function (x) { return !x.d; }).slice(0, 2);
+    var bills = S.fin.bills.filter(function (b) { return b.paid !== realMonthKey() && b.day - new Date().getDate() >= 0 && b.day - new Date().getDate() <= 3; });
+    var count = houseRows.length + mealRows.length + remRows.length + bills.length;
+    var hr = new Date().getHours(), greet = hr < 12 ? 'صباح الخير' : 'مساء الخير';
+    var C = 2 * Math.PI * 40;
+    var hero = '<section class="hero" aria-label="ملخص اليوم"><svg class="pat" aria-hidden="true"><defs><pattern id="lat" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M0 28L28 0l28 28-28 28z" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/><circle cx="28" cy="28" r="9" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/></pattern></defs><rect width="100%" height="100%" fill="url(#lat)"/></svg>' +
+      '<div class="hero-in"><div class="hero-txt"><span class="hello">' + greet + '</span><h1>' + fullDate() + '</h1>' +
+      '<span class="pill">النهارده عندك ' + count + ' حاجة</span><span class="pill">' + done + ' من ' + all.length + ' مهمة تنظيف</span></div>' +
+      '<div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="8"/><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + (pct / 100 * C).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg>' +
+      '<div class="lab"><b>' + pct + '%</b><small>إنجاز اليوم</small></div></div></div></section>';
+    var g1 = '<div class="group"><div class="g-head"><span class="t">' + I.house + 'البيت</span><button class="open" data-act="go" data-sec="house" data-tab="clean">افتحي ' + I.chevL + '</button></div>' +
+      (houseRows.length ? '<ul class="tasks">' + houseRows.map(agendaRow).join('') + '</ul>' : '<div class="empty">مفيش مهام بيت النهارده.</div>') + '</div>';
+    var g2 = '<div class="group"><div class="g-head"><span class="t">' + I.pot + 'المطبخ</span><button class="open" data-act="go" data-sec="kitchen" data-tab="meals">افتحي ' + I.chevL + '</button></div>' +
+      (mealRows.length ? mealRows.map(function (m) { return '<button class="row-link" data-act="go" data-sec="kitchen" data-tab="meals"><span><span class="t">' + m.l + ': ' + esc(m.v) + '</span><br><span class="s">الأكل</span></span>' + I.chevL + '</button>'; }).join('<div class="divider"></div>') : '<div class="empty">ضيفي أكلة النهارده من مخطط الوجبات.</div>') + '</div>';
+    var g3 = '';
+    if (remRows.length || bills.length) {
+      g3 = '<div class="group"><div class="g-head"><span class="t">' + I.cal + 'حياتي والفلوس</span></div>' +
+        bills.map(function (b) { return '<button class="row-link" data-act="go" data-sec="money" data-tab="bills"><span><span class="t">' + esc(b.t) + '</span><br><span class="s">بتستحق يوم ' + b.day + ' · ' + money(b.amt) + ' جنيه</span></span>' + I.chevL + '</button>'; }).join('') +
+        (remRows.length ? '<ul class="tasks">' + remRows.map(function (t) { return agendaRow({ t: t.t, tag: 'لازم أفتكر', path: 'life.remember', id: t.id, pk: 'once', done: !!t.d }); }).join('') + '</ul>' : '') + '</div>';
+    }
+    return '<div class="stack">' + hero + '<div class="agenda-title"><h2>أجندة النهارده</h2><span class="hint">خلصيهم وخلاص</span></div><section class="card">' + g1 + g2 + g3 + '</section></div>';
+  }
+
+  /* ====================== pages: house ====================== */
+  function curRoom() {
+    var r = findId(S.clean.rooms, ui.room);
+    if (!r) { r = S.clean.rooms[0]; ui.room = r && r.id; }
+    return r;
+  }
+  function viewClean() {
+    var room = curRoom(), freq = FREQS.filter(function (f) { return f.id === ui.freq; })[0];
+    var path = 'clean.tasks.' + room.id + '|' + ui.freq, editing = ui.edit === 'clean';
+    var rooms = S.clean.rooms.map(function (r) { return '<button class="chip room" aria-pressed="' + (r.id === room.id) + '" data-act="room" data-id="' + r.id + '">' + esc(r.name) + '</button>'; }).join('');
+    var adder = ui.edit === 'addroom'
+      ? '<form class="add-row" data-form="room" style="flex:none;width:210px">' + inp('room', 't', 'اسم الغرفة', 'style="height:42px;border-radius:99px"') + '<button class="chip freq" aria-pressed="true" type="submit">إضافة</button></form>'
+      : '<button class="chip" data-act="addroom">' + I.plus + ' غرفة</button>';
+    var freqs = FREQS.map(function (f) { return '<button class="chip freq" aria-pressed="' + (f.id === ui.freq) + '" data-act="freq" data-id="' + f.id + '">' + f.label + '</button>'; }).join('');
+    var title = editing ? '<input class="inp" style="height:40px;border-radius:12px;max-width:190px" type="text" ' + bind('clean.rooms.' + room.id + '.name', room.name, 'data-rr="1"') + ' aria-label="اسم الغرفة">' : esc(room.name);
+    var delRoom = editing && S.clean.rooms.length > 1 ? '<div class="chips"><button class="chip danger" data-act="delroom" data-id="' + room.id + '">حذف الغرفة</button></div>' : '';
+    return '<div class="stack"><section class="card"><div class="chips">' + rooms + adder + '</div><div class="scroll-row" role="group" aria-label="التكرار">' + freqs + '</div>' +
+      '<div class="sec-head"><div class="sec-title muted">' + title + '</div>' + editBtn('clean') + '</div>' +
+      checklist(path, { pk: periodKey(ui.freq), edit: 'clean', empty: 'مفيش مهام هنا لسه. ضيفي أول مهمة من تحت.' }) + delRoom +
+      addRow('task:' + path, 'ضيفي مهمة ' + forRoom(room.name)) + '</section>' + deepLink(room) + note(freq.note) + '</div>';
+  }
+  function viewPlan() {
+    var days = DAYS.map(function (d, i) {
+      return '<button class="chip freq" aria-pressed="' + (i === ui.day) + '" data-act="day" data-id="' + i + '">' + d + (i === todayIdx() ? ' <span class="dot" title="النهارده"></span>' : '') + '</button>';
+    }).join('');
+    var path = 'plan.' + ui.day;
+    return '<div class="stack"><section class="card"><div class="scroll-row" role="group" aria-label="أيام الأسبوع">' + days + '</div>' +
+      head(DAYS[ui.day] + (ui.day === todayIdx() ? ' · النهارده' : ''), 'plan', true) +
+      checklist(path, { pk: periodKey('weekly'), edit: 'plan', empty: 'اليوم ده فاضي. ضيفي مهمة من تحت.' }) +
+      addRow('task:' + path, 'ضيفي مهمة ليوم ' + DAYS[ui.day]) + '</section>' + note('مهام الأسبوع بتتصفّر لوحدها كل سبت.') + '</div>';
+  }
+  function viewLaundry() {
+    return '<div class="stack"><section class="card">' + head('غسيل الأسبوع', 'laundry1') +
+      checklist('laundry.week', { pk: periodKey('weekly'), edit: 'laundry1' }) + addRow('task:laundry.week', 'مثلاً: بطاطين') +
+      '<button class="btn-wide outline" data-act="newweek">ابدأي أسبوع جديد</button></section>' +
+      '<section class="card">' + head('دولاب الملابس', 'laundry2') + checklist('laundry.closet', { edit: 'laundry2' }) + addRow('task:laundry.closet', 'مثلاً: هدوم الشتا') + '</section></div>';
+  }
+  function viewStock() {
+    var low = S.stock.filter(function (s) { return s.st !== 'ok'; });
+    var cats = []; S.stock.forEach(function (s) { if (cats.indexOf(s.cat) < 0) cats.push(s.cat); });
+    var editing = ui.edit === 'stock';
+    var tip = '<div class="note mint">' + I.bulb + '<span>مش محتاجة تحدّثي المخزون بإيدك. أول ما تدوسي <b>قرب يخلص</b> أو <b>خلص</b> الحاجة بتنزل لقائمة المشتريات لوحدها، وأول ما تعلّمي إنك اشتريتيها بترجع <b>متوفر</b>.</span></div>';
+    var summ = '<section class="card" style="gap:10px"><div class="sec-title">' + (low.length ? low.length + ' حاجة ناقصة' : 'كله متوفر') + '</div>' +
+      (low.length ? '<div class="hint" style="font-size:17px">' + low.map(function (s) { return esc(s.name); }).join('، ') + '</div><button class="tag-pill" data-act="go" data-sec="kitchen" data-tab="shop">في لستة المشتريات</button>' : '') + '</section>';
+    var groups = cats.map(function (c) {
+      return '<div class="cat-lbl">' + esc(c) + '</div>' + S.stock.filter(function (s) { return s.cat === c; }).map(function (s) {
+        if (editing) return '<div class="item-block"><div class="add-row"><input class="inp" type="text" data-bind="stock.' + s.id + '.name" value="' + esc(s.name) + '" aria-label="اسم الصنف"><button class="del" data-act="sdel" data-id="' + s.id + '" aria-label="حذف ' + esc(s.name) + '">' + I.trash + '</button></div></div>';
+        return '<div class="item-block"><div class="item-name">' + esc(s.name) + '</div><div class="seg" role="group" aria-label="حالة ' + esc(s.name) + '">' +
+          [['ok', 'متوفر'], ['low', 'قرب يخلص'], ['out', 'خلص']].map(function (x) { return '<button class="s-' + x[0] + '" aria-pressed="' + (s.st === x[0]) + '" data-act="stock" data-id="' + s.id + '" data-st="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div></div>';
+      }).join('');
+    }).join('');
+    var addCard = '<section class="card"><div class="sec-title" style="font-size:18px">ضيفي صنف للمخزون</div><form data-form="stock" class="add-grid" autocomplete="off"><div class="grow">' + inp('stock', 't', 'اسم الصنف') + '</div>' + sel('stock', 'cat', STOCK_CATS) + '<button type="submit" class="btn-wide" style="min-height:52px">إضافة</button></form></section>';
+    return '<div class="stack">' + tip + summ + outerHead('كل الأصناف', 'stock') + '<section class="card" style="gap:0">' + (groups || '<div class="empty">المخزون فاضي.</div>') + '</section>' + addCard + '</div>';
+  }
+  function viewMaint() {
+    var editing = ui.edit === 'maint', t0 = todayDate();
+    var rows = S.maint.map(function (m) {
+      var due = addMonths(m.last, m.every), left = Math.round((due - t0) / 86400000);
+      var badge = left < 0 ? '<span class="badge late">متأخرة ' + (-left) + ' يوم</span>' : left <= 14 ? '<span class="badge warn">بعد ' + left + ' يوم</span>' : '<span class="badge">بعد ' + left + ' يوم</span>';
+      if (editing) return '<div class="ex-row"><input class="inp" style="height:44px;border-radius:12px" data-bind="maint.' + m.id + '.t" value="' + esc(m.t) + '"><button class="del sm" data-act="mdel" data-id="' + m.id + '" aria-label="حذف">' + I.trash + '</button></div>';
+      return '<div class="ex-row"><div class="nm">' + esc(m.t) + '<small>كل ' + m.every + ' شهور · آخر مرة ' + m.last + '</small></div>' + badge + '<button class="mini-btn" data-act="mdone" data-id="' + m.id + '">تمت</button></div>';
+    }).join('');
+    return '<div class="stack"><section class="card">' + head('صيانة البيت', 'maint') + (rows || '<div class="empty">مفيش صيانة مسجّلة.</div>') +
+      '<form data-form="maint" class="add-grid" autocomplete="off"><div class="grow">' + inp('maint', 't', 'مثلاً: تنضيف مواسير الصرف') + '</div>' + sel('maint', 'every', ['1', '3', '6', '12'], '6') + '<button class="btn-wide" type="submit" style="min-height:52px">ضيفي (كل شهور)</button></form></section>' +
+      note('دوسي «تمت» لما تخلصي الصيانة، والتذكير الجاي بيتحسب لوحده.') + '</div>';
+  }
+  function viewOrganize() {
+    var cards = S.organize.map(function (s) {
+      return '<section class="card">' + head(esc(s.title), 'org' + s.id) + checklist('organize.' + s.id + '.items', { edit: 'org' + s.id }) + addRow('task:organize.' + s.id + '.items', 'ضيفي حاجة تترتّب') + '</section>';
+    }).join('');
+    return '<div class="stack">' + cards + '<section class="card"><form class="add-row" data-form="orgsec">' + inp('orgsec', 't', 'قسم جديد، مثلاً: المخزن') + '<button class="btn-sq" type="submit" aria-label="إضافة قسم">' + I.plus + '</button></form></section></div>';
+  }
+
+  /* ====================== pages: rooms (deep work) ====================== */
+  function deepOf(id) { return list('deep.' + id); }
+  function deepStats(id) {
+    var L = deepOf(id), done = L.filter(function (t) { return t.st === 'done'; }).length, doing = L.filter(function (t) { return t.st === 'doing'; }).length;
+    return {
+      all: L.length, done: done, doing: doing, todo: L.length - done - doing, open: L.length - done,
+      high: L.filter(function (t) { return t.st !== 'done' && t.pri === 'high'; }).length, pct: L.length ? Math.round(done / L.length * 100) : 0
+    };
+  }
+  function heroPat() {
+    return '<svg class="pat" aria-hidden="true"><defs><pattern id="lat2" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M0 28L28 0l28 28-28 28z" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/><circle cx="28" cy="28" r="9" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/></pattern></defs><rect width="100%" height="100%" fill="url(#lat2)"/></svg>';
+  }
+  function ringSvg(pct, label) {
+    var C = 2 * Math.PI * 40;
+    return '<div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="8"/><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + (pct / 100 * C).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg><div class="lab"><b>' + pct + '%</b><small>' + label + '</small></div></div>';
+  }
+  function deepLink(room) {
+    var s = deepStats(room.id);
+    return '<button class="link-card" data-act="rp" data-id="' + room.id + '"><span class="lc-ic">' + I.house + '</span><span class="lc-tx"><b>الشغل العميق في ' + esc(room.name) + '</b><small>' +
+      (s.all ? s.open + ' مفتوحة' + (s.high ? ' · ' + s.high + ' أولوية عالية' : '') : 'ضيفي أول مهمة شغل عميق') + '</small></span>' + I.chevL + '</button>';
+  }
+  function viewRooms() {
+    var room = findId(S.clean.rooms, ui.rp);
+    if (room) return roomPage(room);
+    ui.rp = null;
+    var tot = { all: 0, done: 0, open: 0, high: 0 };
+    S.clean.rooms.forEach(function (x) { var s = deepStats(x.id); tot.all += s.all; tot.done += s.done; tot.open += s.open; tot.high += s.high; });
+    var pct = tot.all ? Math.round(tot.done / tot.all * 100) : 0;
+    var summary = '<section class="card" style="gap:10px"><div class="cat-lbl">الشغل العميق في البيت</div><div class="goal-top"><span class="big">' + tot.open + '</span><span class="of">مهمة مفتوحة</span></div>' + bar(pct) +
+      '<div class="goal-foot"><span>' + tot.done + ' من ' + tot.all + ' تمت</span><span>' + (tot.high ? tot.high + ' أولوية عالية' : 'مفيش أولويات عالية') + '</span></div></section>';
+    var cards = S.clean.rooms.map(function (x) {
+      var s = deepStats(x.id);
+      var badge = s.high ? '<span class="pri pri-high">' + s.high + ' أولوية عالية</span>' : (s.all && !s.open ? '<span class="pri pri-low">خلصت كلها</span>' : '<span class="pri pri-none">' + (s.open ? s.open + ' مفتوحة' : 'ابدئي بإضافة مهمة') + '</span>');
+      return '<button class="room-card" data-act="rp" data-id="' + x.id + '"><span class="rc-name">' + esc(x.name) + '</span><span class="rc-meta">' + (s.all ? s.done + ' من ' + s.all + ' تم' : 'مفيش مهام لسه') + '</span>' + bar(s.pct) + badge + '</button>';
+    }).join('');
+    var add = '<section class="card"><div class="sec-title" style="font-size:18px">ضيفي غرفة</div><form class="add-row" data-form="deeproom" autocomplete="off">' + inp('deeproom', 't', 'اسم الغرفة، مثلاً: المكتب') +
+      '<button class="btn-sq" type="submit" aria-label="إضافة غرفة">' + I.plus + '</button></form><div class="hint">الغرفة الجديدة بتظهر كمان في تبويب التنظيف.</div></section>';
+    return '<div class="stack">' + summary + outerHeadPlain('غرف البيت') + '<div class="room-grid">' + cards + '</div>' + add + '</div>';
+  }
+  function outerHeadPlain(label) { return '<div class="outer-head"><span class="lbl">' + label + '</span></div>'; }
+  function deepTask(t, rid) {
+    var path = 'deep.' + rid + '.' + t.id, open = ui.et === t.id, done = t.st === 'done';
+    var stSeg = ST.map(function (x) { return '<button class="s-' + (x[0] === 'done' ? 'ok' : x[0]) + '" aria-pressed="' + (t.st === x[0]) + '" data-act="dst" data-id="' + t.id + '" data-st="' + x[0] + '">' + x[1] + '</button>'; }).join('');
+    var edit = '';
+    if (open) {
+      edit = '<div class="dt-edit"><label>اسم المهمة<input class="inp" type="text" data-rr="1" data-bind="' + path + '.t" value="' + esc(t.t) + '"></label>' +
+        '<label>ملاحظة (اختياري)<input class="inp" type="text" data-rr="1" data-bind="' + path + '.note" value="' + esc(t.note || '') + '" placeholder="مثلاً: محتاجة مزيل دهون"></label>' +
+        '<div class="cat-lbl">الأولوية</div><div class="seg" role="group" aria-label="الأولوية">' + PRI.map(function (x) { return '<button class="p-' + x[0] + '" aria-pressed="' + (t.pri === x[0]) + '" data-act="dpri" data-id="' + t.id + '" data-pri="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>' +
+        '<div class="chips"><button class="chip freq" aria-pressed="true" data-act="dedit" data-id="' + t.id + '">تم</button>' +
+        (ui.confirm === 'd:' + t.id ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="ddel" data-id="' + t.id + '">تأكيد الحذف</button>' : '<button class="chip danger" data-act="askddel" data-id="' + t.id + '">حذف المهمة</button>') + '</div></div>';
+    }
+    return '<li class="dt' + (done ? ' done' : '') + '"><div class="dt-top"><span class="dt-title">' + esc(t.t) + '</span><span class="pri pri-' + t.pri + '">' + PRI_L[t.pri] + '</span></div>' +
+      (t.note ? '<p class="dt-note">' + esc(t.note) + '</p>' : '') +
+      '<div class="seg" role="group" aria-label="حالة ' + esc(t.t) + '">' + stSeg + '</div>' +
+      '<div class="dt-foot"><button class="link-btn" data-act="dedit" data-id="' + t.id + '" aria-expanded="' + open + '">' + (open ? 'إغلاق' : 'تعديل') + '</button></div>' + edit + '</li>';
+  }
+  function roomPage(r) {
+    var s = deepStats(r.id), L = deepOf(r.id), editing = ui.edit === 'rpage';
+    var back = '<button class="back" data-act="rback">' + I.chevR + ' كل الغرف</button>';
+    var title = editing ? '<input type="text" data-rr="1" data-bind="clean.rooms.' + r.id + '.name" value="' + esc(r.name) + '" aria-label="اسم الغرفة">' : esc(r.name);
+    var hero = '<section class="hero" aria-label="ملخص ' + esc(r.name) + '">' + heroPat() + '<div class="hero-in"><div class="hero-txt"><span class="hello">الشغل العميق</span><h1>' + title + '</h1>' +
+      '<div class="pills"><span class="pill">' + s.open + ' مفتوحة</span>' + (s.high ? '<span class="pill">' + s.high + ' أولوية عالية</span>' : '') + '</div></div>' + ringSvg(s.pct, 'تم') + '</div></section>';
+    var fs = [['all', 'الكل', s.all], ['todo', 'لسه', s.todo], ['doing', 'جاري', s.doing], ['done', 'تم', s.done]];
+    var ps = [['all', 'كل الأولويات'], ['high', 'عالية'], ['mid', 'متوسطة'], ['low', 'منخفضة']];
+    var filters = '<div class="scroll-row" role="group" aria-label="فلتر الحالة">' + fs.map(function (f) { return '<button class="chip freq" aria-pressed="' + (ui.df === f[0]) + '" data-act="dflt" data-id="' + f[0] + '">' + f[1] + ' <span class="cnt">' + f[2] + '</span></button>'; }).join('') + '</div>' +
+      '<div class="scroll-row" role="group" aria-label="فلتر الأولوية">' + ps.map(function (f) { return '<button class="chip room" aria-pressed="' + (ui.dp === f[0]) + '" data-act="dpf" data-id="' + f[0] + '">' + f[1] + '</button>'; }).join('') + '</div>';
+    var view = L.filter(function (t) { return (ui.df === 'all' || t.st === ui.df) && (ui.dp === 'all' || t.pri === ui.dp); })
+      .sort(function (a, b) { return ((a.st === 'done') - (b.st === 'done')) || (PRI_RANK[a.pri] - PRI_RANK[b.pri]); });
+    var items = view.length ? '<ul class="dt-list">' + view.map(function (t) { return deepTask(t, r.id); }).join('') + '</ul>'
+      : '<div class="empty">' + (L.length ? 'مفيش مهام بالفلتر ده.' : 'مفيش مهام شغل عميق في ' + esc(r.name) + ' لسه. ضيفي أول مهمة من تحت.') + '</div>';
+    var add = '<section class="card"><div class="sec-title" style="font-size:18px">ضيفي مهمة شغل عميق</div><form data-form="deep:' + r.id + '" class="add-grid" autocomplete="off"><div class="grow">' + inp('deep:' + r.id, 't', 'ضيفي مهمة شغل عميق ' + forRoom(r.name)) + '</div>' +
+      sel('deep:' + r.id, 'pri', PRI.map(function (x) { return x[1]; }), 'متوسطة') + '<button class="btn-wide" type="submit" style="min-height:52px">إضافة</button></form></section>';
+    var footBtns = (s.done ? (ui.confirm === 'clear' ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="dclear">تأكيد مسح اللي تم</button>' : '<button class="chip outline" data-act="askdclear">امسحي اللي تم</button>') : '') +
+      (editing && S.clean.rooms.length > 1 ? (ui.confirm === 'room' ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="delroomx">تأكيد حذف الغرفة</button>' : '<button class="chip danger" data-act="askdelroomx">حذف الغرفة</button>') : '');
+    var foot = footBtns ? '<div class="chips">' + footBtns + '</div>' : '';
+    return '<div class="stack" style="padding-top:14px"><div class="outer-head">' + back + editBtn('rpage') + '</div>' + hero.replace('class="hero"', 'class="hero" style="margin-top:0"') + filters + items + add + foot + '</div>';
+  }
+
+  /* ====================== pages: kitchen ====================== */
+  function viewMeals() {
+    var rows = DAYS.map(function (d, i) {
+      var m = S.meals[i] || (S.meals[i] = { b: '', l: '', d: '' });
+      return '<tr><td class="day' + (i === todayIdx() ? ' today' : '') + '">' + d + '</td>' + MEALS.map(function (x) {
+        return '<td><input class="cell" type="text" data-bind="meals.' + i + '.' + x[0] + '" value="' + esc(m[x[0]]) + '" aria-label="' + x[1] + ' ' + d + '"></td>';
+      }).join('') + '</tr>';
+    }).join('');
+    return '<div class="stack"><section class="card"><div class="table-wrap"><table class="meals"><thead><tr><th></th>' + MEALS.map(function (x) { return '<th>' + x[1] + '</th>'; }).join('') + '</tr></thead><tbody>' + rows + '</tbody></table></div></section>' +
+      note('اكتبي أي حاجة في الخانة، أو ضيفي أكلة من بنك الأكلات.') + '</div>';
+  }
+  function viewBank() {
+    var editing = ui.edit === 'bank', cats = [];
+    S.bank.forEach(function (b) { if (cats.indexOf(b.cat) < 0) cats.push(b.cat); });
+    var cards = cats.map(function (c) {
+      return '<section class="card" style="gap:0"><div class="cat-lbl" style="margin-bottom:6px">' + esc(c) + '</div>' + S.bank.filter(function (b) { return b.cat === c; }).map(function (b) {
+        if (editing) return '<div class="item-block"><div class="add-row"><input class="inp" data-bind="bank.' + b.id + '.name" value="' + esc(b.name) + '"><input class="inp num" style="width:90px" inputmode="numeric" data-num="1" data-bind="bank.' + b.id + '.min" value="' + b.min + '"><button class="del" data-act="bdel" data-id="' + b.id + '" aria-label="حذف">' + I.trash + '</button></div></div>';
+        var panel = '';
+        if (ui.placing === b.id) {
+          panel = '<div class="place-panel"><div class="scroll-row">' + DAYS.map(function (d, i) { return '<button class="chip freq" aria-pressed="' + (ui.pd === i) + '" data-act="pday" data-id="' + i + '">' + d + '</button>'; }).join('') + '</div>' +
+            '<div class="chips">' + MEALS.map(function (m) { return '<button class="chip freq" aria-pressed="' + (ui.pm === m[0]) + '" data-act="pmeal" data-id="' + m[0] + '">' + m[1] + '</button>'; }).join('') + '</div>' +
+            '<button class="btn-wide" data-act="placeok" data-id="' + b.id + '" style="min-height:46px">تمام، حطيها</button></div>';
+        }
+        return '<div class="item-block"><div class="sec-head" style="min-height:0"><div class="item-name">' + esc(b.name) + '</div><span class="time-pill">' + b.min + ' دقيقة</span></div>' +
+          '<button class="place-btn" data-act="place" data-id="' + b.id + '">حطيها في الخطة</button>' + panel + '</div>';
+      }).join('') + '</section>';
+    }).join('');
+    var add = '<section class="card"><div class="sec-title" style="font-size:18px">ضيفي أكلة للبنك</div><form data-form="bank" class="add-grid" autocomplete="off"><div class="grow">' + inp('bank', 't', 'اسم الأكلة') + '</div>' + sel('bank', 'cat', BANK_CATS) + inp('bank', 'min', 'الوقت بالدقايق', 'inputmode="numeric"') + '<button class="btn-wide grow" type="submit">إضافة</button></form></section>';
+    return '<div class="stack">' + outerHead('أكلات البيت', 'bank') + (cards || '<div class="empty">البنك فاضي.</div>') + add + '</div>';
+  }
+  function viewShop() {
+    var total = shopTotal(), left = remaining(realMonthKey()) - total, editing = ui.edit === 'shop';
+    var cats = []; S.shop.forEach(function (s) { if (cats.indexOf(s.cat) < 0) cats.push(s.cat); });
+    var summary = '<section class="card"><div class="shop-total"><div><div class="k">إجمالي اللستة المتوقع</div><div class="v">' + money(total) + ' <span style="font-size:18px">جنيه</span></div></div>' +
+      '<div style="text-align:start"><div class="k">لو اشتريتي دلوقتي هيتبقالك</div><div class="v ' + (left < 0 ? 'v-bad' : 'v-ok') + '" style="font-size:30px">' + money(left) + '</div></div></div></section>';
+    var cards = cats.map(function (c) {
+      return '<section class="card" style="gap:6px"><div class="cat-lbl">' + esc(c) + '</div><ul class="tasks">' + S.shop.filter(function (s) { return s.cat === c; }).map(function (s) {
+        if (editing) return '<li class="task"><div class="task-text"><input class="inp" style="height:42px;border-radius:12px" data-bind="shop.' + s.id + '.name" value="' + esc(s.name) + '"></div><input class="inp num price-inp" inputmode="numeric" data-num="1" data-rr="1" data-bind="shop.' + s.id + '.price" value="' + s.price + '"><button class="del" data-act="shopdel" data-id="' + s.id + '" aria-label="حذف">' + I.trash + '</button></li>';
+        return '<li class="task' + (s.done ? ' done' : '') + '"><button class="check" role="checkbox" aria-checked="' + !!s.done + '" aria-label="' + esc(s.name) + '" data-act="shopck" data-id="' + s.id + '">' + I.check + '</button><span class="task-text">' + esc(s.name) + '</span><span class="price">' + money(s.price) + '</span></li>';
+      }).join('') + '</ul></section>';
+    }).join('');
+    var add = '<section class="card"><form data-form="shop" class="add-grid" autocomplete="off">' + inp('shop', 't', 'اسم الحاجة') + sel('shop', 'cat', STORE_CATS) + inp('shop', 'price', 'السعر', 'inputmode="numeric"') +
+      '<div style="display:flex;justify-content:flex-start"><button class="btn-sq" type="submit" aria-label="إضافة">' + I.plus + '</button></div></form>' +
+      '<button class="btn-wide" data-act="shopdone">' + I.wallet.replace('<svg', '<svg width="22" height="22"') + ' خلّصت السوق — سجّلي المصروف</button>' +
+      '<div class="hint" style="text-align:center">بيسجّل سعر اللي علّمتي عليه كمصروف، ويشيلهم من اللستة، ويرجّعهم متوفر في المخزون.</div></section>';
+    return '<div class="stack">' + summary + outerHead('اللستة', 'shop') + (cards || '<div class="empty">اللستة فاضية.</div>') + add + '</div>';
+  }
+
+  /* ====================== pages: money ====================== */
+  function viewMoney() {
+    var key = monthKey(), spent = spentOf(key), rem = remaining(key), fixed = fixedTotal();
+    var bar = '<div class="month-bar"><button data-act="mprev" aria-label="الشهر اللي قبله">' + I.chevR + '</button><span class="m">' + MONTHS[ui.fm] + ' ' + ui.fy + '</span><button data-act="mnext" aria-label="الشهر اللي بعده">' + I.chevL + '</button></div>';
+    var stats = '<div class="stats"><div class="stat"><div class="k">دخل الشهر</div><div class="v">' + money(S.fin.income) + '</div></div><div class="stat"><div class="k">التزامات ثابتة</div><div class="v">' + money(fixed) + '</div></div>' +
+      '<div class="stat"><div class="k">اتصرف</div><div class="v v-amber">' + money(spent) + '</div></div><div class="stat"><div class="k">المتبقي</div><div class="v ' + (rem < 0 ? 'v-bad' : 'v-ok') + '">' + (rem < 0 ? money(-rem) + '-' : money(rem)) + '</div></div></div>';
+    var tabs = '<div class="tabs static" role="tablist">' + SECTIONS.money.tabs.map(function (t) { return '<button class="tab" role="tab" aria-selected="' + (t[0] === ui.tabs.money) + '" data-act="tab" data-id="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>';
+    var body = { budget: moneyBudget, expenses: moneyExpenses, bills: moneyBills, subs: moneySubs, savings: moneySavings }[ui.tabs.money]();
+    return '<div class="stack"><div>' + bar + '</div>' + stats + tabs + body + '</div>';
+  }
+  function moneyBudget() {
+    var editing = ui.edit === 'fixed';
+    var rows = S.fin.fixed.map(function (f) {
+      if (editing) return '<div class="frow"><input class="inp" style="height:46px;border-radius:14px" data-bind="fin.fixed.' + f.id + '.t" value="' + esc(f.t) + '"><input class="inp amt num" inputmode="numeric" data-num="1" data-rr="1" data-bind="fin.fixed.' + f.id + '.amt" value="' + f.amt + '"><button class="del sm" data-act="fixdel" data-id="' + f.id + '" aria-label="حذف">' + I.trash + '</button></div>';
+      return '<div class="frow"><label>' + esc(f.t) + '</label><input class="inp amt num" inputmode="numeric" data-num="1" data-rr="1" data-bind="fin.fixed.' + f.id + '.amt" value="' + f.amt + '" aria-label="' + esc(f.t) + '"></div>';
+    }).join('');
+    return '<section class="card"><div class="sec-title">دخل الأسرة</div><input class="inp num" inputmode="numeric" data-num="1" data-rr="1" data-bind="fin.income" value="' + S.fin.income + '" aria-label="دخل الأسرة">' +
+      '<div class="sec-head"><div class="sec-title">الالتزامات الثابتة</div>' + editBtn('fixed') + '</div>' + rows +
+      '<form data-form="fixed" class="add-row" autocomplete="off">' + inp('fixed', 't', 'التزام جديد') + '<input class="inp num" style="width:100px;flex:none" name="amt" data-draft="fixed:amt" placeholder="المبلغ" inputmode="numeric" value="' + esc(D('fixed:amt')) + '"><button class="btn-sq" type="submit" aria-label="إضافة">' + I.plus + '</button></form></section>';
+  }
+  function moneyExpenses() {
+    var key = monthKey(), L = S.fin.expenses.filter(function (e) { return e.date.slice(0, 7) === key; }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    var rows = L.map(function (e) { return '<div class="ex-row"><div class="nm">' + esc(e.t) + '<small>' + esc(e.cat) + ' · ' + e.date + '</small></div><span class="a">' + money(e.amt) + '</span><button class="del sm" data-act="expdel" data-id="' + e.id + '" aria-label="حذف">' + I.trash + '</button></div>'; }).join('');
+    return '<section class="card"><div class="sec-head"><div class="sec-title">مصاريف الشهر</div><span class="v-amber" style="font-weight:700;font-size:20px">' + money(spentOf(key)) + '</span></div>' + (rows || '<div class="empty">مفيش مصاريف مسجّلة في الشهر ده.</div>') +
+      '<form data-form="exp" class="add-grid" autocomplete="off"><div class="grow">' + inp('exp', 't', 'اتصرفت على إيه؟') + '</div>' + inp('exp', 'amt', 'المبلغ', 'inputmode="numeric"') + sel('exp', 'cat', EXP_CATS) + '<button class="btn-wide grow" type="submit">سجّلي المصروف</button></form></section>';
+  }
+  function moneyBills() {
+    var mk = monthKey(), editing = ui.edit === 'bills';
+    var rows = S.fin.bills.map(function (b) {
+      if (editing) return '<div class="ex-row"><input class="inp" style="height:44px;border-radius:12px" data-bind="fin.bills.' + b.id + '.t" value="' + esc(b.t) + '"><input class="inp num" style="width:84px;height:44px;border-radius:12px" inputmode="numeric" data-num="1" data-bind="fin.bills.' + b.id + '.amt" value="' + b.amt + '"><button class="del sm" data-act="billdel" data-id="' + b.id + '" aria-label="حذف">' + I.trash + '</button></div>';
+      var paid = b.paid === mk;
+      return '<div class="task' + (paid ? ' done' : '') + '"><button class="check" role="checkbox" aria-checked="' + paid + '" aria-label="' + esc(b.t) + '" data-act="billpay" data-id="' + b.id + '">' + I.check + '</button><span class="task-text">' + esc(b.t) + '<br><span class="tag">بتستحق يوم ' + b.day + '</span></span><span class="a" style="font-weight:700">' + money(b.amt) + '</span></div>';
+    }).join('');
+    return '<section class="card">' + head('الفواتير', 'bills') + (rows ? '<div class="tasks">' + rows + '</div>' : '<div class="empty">مفيش فواتير.</div>') +
+      '<form data-form="bill" class="add-grid" autocomplete="off"><div class="grow">' + inp('bill', 't', 'اسم الفاتورة') + '</div>' + inp('bill', 'amt', 'المبلغ', 'inputmode="numeric"') + inp('bill', 'day', 'يوم الاستحقاق (١-٣١)', 'inputmode="numeric"') + '<button class="btn-wide grow" type="submit">إضافة</button></form></section>' +
+      note('علّمي على الفاتورة لما تدفعيها. العلامة بتتصفّر أول كل شهر.');
+  }
+  function moneySubs() {
+    var editing = ui.edit === 'subs';
+    var rows = S.fin.subs.map(function (s) {
+      if (editing) return '<div class="ex-row"><input class="inp" style="height:44px;border-radius:12px" data-bind="fin.subs.' + s.id + '.t" value="' + esc(s.t) + '"><input class="inp num" style="width:84px;height:44px;border-radius:12px" inputmode="numeric" data-num="1" data-rr="1" data-bind="fin.subs.' + s.id + '.amt" value="' + s.amt + '"><button class="del sm" data-act="subdel" data-id="' + s.id + '" aria-label="حذف">' + I.trash + '</button></div>';
+      return '<div class="ex-row"><div class="nm">' + esc(s.t) + '<small>كل شهر</small></div><span class="a">' + money(s.amt) + '</span></div>';
+    }).join('');
+    return '<section class="card"><div class="sec-head"><div class="sec-title">الاشتراكات</div>' + editBtn('subs') + '</div><div class="sec-sub">إجمالي كل شهر: ' + money(sum(S.fin.subs, function (s) { return s.amt; })) + ' جنيه</div>' + (rows || '<div class="empty">مفيش اشتراكات.</div>') +
+      '<form data-form="sub" class="add-row" autocomplete="off">' + inp('sub', 't', 'اشتراك جديد') + '<input class="inp num" style="width:100px;flex:none" name="amt" data-draft="sub:amt" placeholder="المبلغ" inputmode="numeric" value="' + esc(D('sub:amt')) + '"><button class="btn-sq" type="submit" aria-label="إضافة">' + I.plus + '</button></form></section>';
+  }
+  function moneySavings() {
+    var editing = ui.edit === 'goals';
+    var cards = S.fin.goals.map(function (g) {
+      var pct = g.target ? Math.floor(g.saved / g.target * 100) : 0;
+      if (editing) return '<section class="card"><div class="add-row"><input class="inp" data-bind="fin.goals.' + g.id + '.t" value="' + esc(g.t) + '"><button class="del" data-act="goaldel" data-id="' + g.id + '" aria-label="حذف">' + I.trash + '</button></div><div class="add-grid"><input class="inp num" inputmode="numeric" data-num="1" data-bind="fin.goals.' + g.id + '.saved" value="' + g.saved + '" aria-label="اللي اتجمّع"><input class="inp num" inputmode="numeric" data-num="1" data-bind="fin.goals.' + g.id + '.target" value="' + g.target + '" aria-label="الهدف"></div></section>';
+      return '<section class="card"><div class="sec-title">' + esc(g.t) + '</div><div class="goal-top"><span class="big">' + money(g.saved) + '</span><span class="of">من ' + money(g.target) + '</span></div>' + bar(pct) +
+        '<div class="goal-foot"><span>وصلتي لـ ' + pct + '%</span><form class="add-row" data-form="dep:' + g.id + '" autocomplete="off"><input class="inp num" name="amt" data-draft="dep' + g.id + ':amt" placeholder="إيداع" inputmode="numeric" value="' + esc(D('dep' + g.id + ':amt')) + '" aria-label="إيداع في ' + esc(g.t) + '"><button class="btn-sq" type="submit" aria-label="إيداع">' + I.plus + '</button></form></div></section>';
+    }).join('');
+    return outerHead('أهداف الادخار', 'goals') + cards + '<section class="card"><form data-form="goal" class="add-grid" autocomplete="off"><div class="grow">' + inp('goal', 't', 'هدف جديد، مثلاً: عربية') + '</div>' + inp('goal', 'target', 'المبلغ المطلوب', 'inputmode="numeric"') + '<button class="btn-wide" type="submit" style="min-height:52px">إضافة هدف</button></form></section>';
+  }
+
+  /* ====================== pages: kids ====================== */
+  function viewKids() {
+    var k = findId(S.kids, ui.kid) || S.kids[0];
+    var chips = '<div class="chips">' + S.kids.map(function (x) { return '<button class="chip room" aria-pressed="' + (k && x.id === k.id) + '" data-act="kid" data-id="' + x.id + '">' + esc(x.name) + '</button>'; }).join('') + '<button class="chip" data-act="addkid">' + I.plus + ' طفل</button></div>';
+    if (!k) return '<div class="stack" style="padding-top:14px">' + chips + '<div class="empty">ضيفي أول طفل.</div></div>';
+    ui.kid = k.id;
+    var sub = [k.grade, k.school].filter(Boolean).join(' · ');
+    var fields = [['المدرسة', 'school', 'المدرسة'], ['الصف', 'grade', 'الصف'], ['مقاس الهدوم', 'clothes', 'مقاس الهدوم'], ['مقاس الجزمة', 'shoe', 'مقاس الجزمة']].map(function (f) {
+      return '<div class="frow"><label for="kf-' + f[1] + '">' + f[0] + '</label><input class="inp" id="kf-' + f[1] + '" type="text" placeholder="' + f[2] + '" data-rr="1" data-bind="kids.' + k.id + '.' + f[1] + '" value="' + esc(k[f[1]]) + '"></div>';
+    }).join('') + '<div class="frow"><label for="kf-bd">تاريخ الميلاد</label><input class="inp" id="kf-bd" type="date" data-bind="kids.' + k.id + '.bd" value="' + esc(k.bd) + '"></div>';
+    var total = sum(k.exp, function (e) { return e.amt; });
+    var exp = k.exp.length ? k.exp.map(function (e) {
+      return '<div class="ex-row"><input class="inp" style="height:46px;border-radius:14px" data-bind="kids.' + k.id + '.exp.' + e.id + '.t" value="' + esc(e.t) + '" aria-label="اسم المصروف"><input class="inp num" style="width:90px;height:46px;border-radius:14px" inputmode="numeric" data-num="1" data-rr="1" data-bind="kids.' + k.id + '.exp.' + e.id + '.amt" value="' + e.amt + '" aria-label="المبلغ"><button class="del sm" data-act="kexpdel" data-id="' + e.id + '" aria-label="حذف">' + I.trash + '</button></div>';
+    }).join('') : '<div class="empty">مفيش مصاريف مسجّلة</div>';
+    var del = ui.confirm === 'kid' ? '<button class="xbtn confirm" data-act="delkid">تأكيد الحذف</button>' : '<button class="xbtn" data-act="askdelkid" aria-label="حذف الطفل">' + I.x + '</button>';
+    return '<div class="stack" style="padding-top:14px">' + chips +
+      '<section class="card"><div class="kid-head"><div class="avatar">' + esc((k.name || '؟').charAt(0)) + '</div><div class="nm"><input type="text" data-rr="1" data-bind="kids.' + k.id + '.name" value="' + esc(k.name) + '" aria-label="اسم الطفل"><div class="sub">' + (sub ? esc(sub) : 'ضيفي بيانات المدرسة') + '</div></div>' + del + '</div>' + fields + '</section>' +
+      '<section class="card"><div class="sec-head"><div class="sec-title">مصاريف ' + esc(k.name) + ' في الشهر</div><span class="big" style="font-size:24px">' + money(total) + '</span></div>' + exp +
+      '<form data-form="kidexp" class="add-row" autocomplete="off">' + inp('kidexp', 't', 'مصروف جديد') + '<input class="inp num" style="width:90px;flex:none" name="amt" data-draft="kidexp:amt" placeholder="المبلغ" inputmode="numeric" value="' + esc(D('kidexp:amt')) + '"><button class="btn-sq" type="submit" aria-label="إضافة">' + I.plus + '</button></form></section></div>';
+  }
+
+  /* ====================== pages: life ====================== */
+  function viewLife() {
+    var tabs = ui.tabs.life;
+    return '<div class="stack">' + (tabs === 'calendar' ? lifeCalendar() : tabs === 'remember' ? lifeRemember() : lifeEvents()) + '</div>';
+  }
+  function lifeCalendar() {
+    var y = ui.cy, m = ui.cm, first = new Date(y, m, 1), off = (first.getDay() + 1) % 7, n = new Date(y, m + 1, 0).getDate(), tk = iso(new Date());
+    var cells = DAYS.map(function (d) { return '<div class="wd">' + d + '</div>'; }).join('');
+    for (var i = 0; i < off; i++) cells += '<span></span>';
+    for (var d = 1; d <= n; d++) {
+      var k = y + '-' + pad(m + 1) + '-' + pad(d), has = (S.life.cal[k] || []).length;
+      cells += '<button class="d' + (k === tk ? ' today' : '') + '" aria-pressed="' + (k === ui.cd) + '" data-act="calday" data-k="' + k + '" aria-label="' + d + ' ' + MONTHS[m] + (has ? '، فيه ' + has + ' حاجة' : '') + '">' + d + '<i class="' + (has ? '' : 'none') + '"></i></button>';
+    }
+    var items = S.life.cal[ui.cd] || [], p = ui.cd.split('-'), ddmm = p[2] + '-' + p[1] + '-' + p[0];
+    var rows = items.length ? items.map(function (e) { return '<div class="ex-row"><div class="nm">' + esc(e.t) + '</div><button class="del sm" data-act="caldel" data-id="' + e.id + '" aria-label="حذف">' + I.trash + '</button></div>'; }).join('') : '<div class="empty">مفيش حاجة في اليوم ده</div>';
+    return '<section class="card"><div class="cal-head"><button class="pill-btn" data-act="cprev">السابق</button><span class="m">' + MONTHS[m] + ' ' + y + '</span><button class="pill-btn" data-act="cnext">التالي</button></div>' +
+      '<div class="cal-grid">' + cells + '</div><div class="divider"></div><div class="iso">' + ui.cd + '</div>' + rows + addRow('cal', 'ضيفي حاجة في ' + ddmm) + '</section>';
+  }
+  function lifeRemember() {
+    return '<section class="card"><div class="sec-head"><div class="hint" style="font-size:16px">أي حاجة تيجي في دماغك اكتبيها هنا وسيبيها.</div>' + editBtn('remember') + '</div>' +
+      checklist('life.remember', { edit: 'remember' }) + addRow('task:life.remember', 'مثلاً: أجدد رخصة العربية') + '<button class="chip outline" style="align-self:flex-start" data-act="clearDone">امسحي اللي خلص</button></section>';
+  }
+  function lifeEvents() {
+    var L = S.life.events.slice().sort(function (a, b) { return daysUntil(a.m, a.d) - daysUntil(b.m, b.d); }), editing = ui.edit === 'events';
+    var rows = L.map(function (e) {
+      var n = daysUntil(e.m, e.d), lab = n === 0 ? 'النهارده' : n === 1 ? 'بكرة' : 'بعد ' + n + ' يوم';
+      if (editing) return '<div class="ex-row"><input class="inp" style="height:44px;border-radius:12px" data-bind="life.events.' + e.id + '.t" value="' + esc(e.t) + '"><button class="del sm" data-act="evdel" data-id="' + e.id + '" aria-label="حذف">' + I.trash + '</button></div>';
+      return '<div class="ex-row" style="padding-block:14px"><div class="nm"><span style="font-size:19px;font-weight:700">' + esc(e.t) + '</span><small style="font-size:15px">' + e.d + ' ' + MONTHS[e.m] + '</small></div><span class="ev-days' + (n <= 7 ? ' soon' : '') + '">' + lab + '</span></div>';
+    }).join('');
+    return outerHead('المناسبات', 'events') + '<section class="card">' + (rows || '<div class="empty">مفيش مناسبات.</div>') +
+      '<form data-form="event" class="add-grid" autocomplete="off">' + inp('event', 't', 'مثلاً: عيد ميلاد ملك') + '<input class="inp" type="date" name="date" data-draft="event:date" value="' + esc(D('event:date')) + '" aria-label="التاريخ"><button class="btn-sq grow" type="submit" aria-label="إضافة" style="grid-column:1/-1;justify-self:start">' + I.plus + '</button></form></section>';
+  }
+
+  /* ====================== pages: bags ====================== */
+  function viewBags() {
+    var b = findId(S.bags, ui.bag) || S.bags[0];
+    var chips = S.bags.map(function (x) {
+      var done = x.items.filter(function (i) { return i.d; }).length, ready = x.items.length && done === x.items.length;
+      return '<button class="chip room" aria-pressed="' + (b && x.id === b.id) + '" data-act="bag" data-id="' + x.id + '">' + esc(x.name) + ' ' + (ready ? '<span class="cnt">✓</span>' : '<span class="cnt">' + x.items.length + '</span>') + '</button>';
+    }).join('') + (ui.edit === 'addbag' ? '<form class="add-row" data-form="bag" style="flex:none;width:210px">' + inp('bag', 't', 'اسم الشنطة', 'style="height:42px;border-radius:99px"') + '<button class="chip freq" aria-pressed="true" type="submit">إضافة</button></form>' : '<button class="chip" data-act="addbag">' + I.plus + ' شنطة</button>');
+    var tip = '<div class="note mint" style="margin-top:14px">' + I.bag + '<span>كل خروجة ليها شنطة. جهّزي الشنطة قبل ما تخرجي، وبعد ما ترجعي دوسي <b>فضّي الشنطة</b> عشان تكون جاهزة للمرة الجاية.</span></div>';
+    if (!b) return '<div class="stack">' + tip + '<div class="chips">' + chips + '</div><div class="empty">ضيفي أول شنطة.</div></div>';
+    ui.bag = b.id;
+    var done = b.items.filter(function (i) { return i.d; }).length, path = 'bags.' + b.id + '.items';
+    var del = ui.confirm === 'bag' ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="delbag">تأكيد المسح</button>' : '<button class="chip danger" data-act="askdelbag">امسحي الشنطة</button>';
+    return '<div class="stack">' + tip + '<div class="chips">' + chips + '</div><section class="card"><div class="sec-head"><div class="sec-title">' + esc(b.name) + '</div>' + editBtn('bag') + '</div>' +
+      '<div class="sec-sub">' + done + ' من ' + b.items.length + ' جاهز</div>' + bar(b.items.length ? done / b.items.length * 100 : 0) +
+      checklist(path, { edit: 'bag', empty: 'الشنطة فاضية.' }) + addRow('task:' + path, 'ضيفي حاجة للشنطة') +
+      '<div class="chips"><button class="chip outline" data-act="bagempty">فضّي الشنطة</button><button class="chip outline" data-act="bagall">علّمي على الكل</button>' + del + '</div></section></div>';
+  }
+
+  /* ====================== pages: me ====================== */
+  function viewMe() {
+    var dk = periodKey('daily'), n = S.me.did.filter(function (t) { return t.d === dk; }).length + S.me.routine.filter(function (t) { return t.d === dk; }).length;
+    var w = S.me.water.k === dk ? S.me.water.n : 0;
+    var cups = ''; for (var i = 0; i < 8; i++) cups += '<button aria-pressed="' + (i < w) + '" data-act="cup" data-i="' + i + '" aria-label="كوب ' + (i + 1) + '"></button>';
+    return '<div class="stack rose" style="padding-top:14px"><div class="note pinky"><h2>البيت مش مسؤوليتك الوحيدة… إنتِ كمان</h2><p>عملتي ' + n + ' حاجة لنفسك النهاردة</p></div>' +
+      '<section class="card"><div class="sec-head"><div class="sec-title">حاجة عملتها لنفسي</div>' + editBtn('did') + '</div>' + checklist('me.did', { pk: dk, edit: 'did' }) + addRow('task:me.did', 'ضيفي حاجة بتحبيها') + '</section>' +
+      '<section class="card"><div class="sec-head"><div class="sec-title">مياه النهارده</div><span class="hint">' + w + ' من 8 أكواب</span></div><div class="water" style="--ck:var(--accent)">' + cups + '</div></section>' +
+      '<section class="card"><div class="sec-head"><div class="sec-title">روتيني</div>' + editBtn('routine') + '</div>' + checklist('me.routine', { pk: dk, edit: 'routine' }) + addRow('task:me.routine', 'ضيفي حاجة لروتينك') + '</section>' + backupCard() + '</div>';
+  }
+
+  /* ====================== backup (export / restore) ====================== */
+  function backupText() { return JSON.stringify({ app: 'baity-planner', v: 2, exportedAt: new Date().toISOString(), state: S }); }
+  function parseBackup(txt) {
+    var o = JSON.parse(String(txt).trim());
+    if (o && o.app === 'baity-planner' && o.state && typeof o.state === 'object') o = o.state;
+    if (o && o.v === 1 && Array.isArray(o.rooms)) return normalize(migrateV1(o));
+    if (o && o.v === 2 && o.clean && Array.isArray(o.clean.rooms) && o.clean.rooms.length) return normalize(o);
+    return null;
+  }
+  function backupCard() {
+    var where = ref ? 'بتتحفظ على الجهاز ده وكمان في قاعدة بيانات التطبيق.' : 'بتتحفظ على الجهاز ده بس (جوه المتصفح)، مش على سيرفر ومش بتتنقل لتليفون تاني لوحدها.';
+    var area = '';
+    if (ui.bk === 'copy') {
+      area = '<div class="bk-area"><textarea class="inp" readonly rows="6" aria-label="نص النسخة الاحتياطية">' + esc(backupText()) + '</textarea></div>';
+    } else if (ui.bk === 'paste') {
+      area = '<div class="bk-area"><textarea class="inp" rows="6" name="t" data-draft="bk:t" placeholder="الصقي هنا نص النسخة الاحتياطية…" aria-label="نص النسخة الاحتياطية">' + esc(D('bk:t')) + '</textarea>' +
+        '<div class="chips">' + (ui.confirm === 'bk'
+          ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="bkapply">تأكيد: استبدال بيانات الجهاز ده</button>'
+          : '<button class="chip outline" data-act="bkask">استرجاع</button>') + '</div></div>';
+    }
+    return '<section class="card"><div class="sec-head"><div class="sec-title">نسخة احتياطية</div></div>' +
+      '<p class="bk-note">بياناتك ' + where + ' نزّلي نسخة من وقت للتاني، عشان لو مسحتي بيانات المتصفح أو غيّرتي التليفون.</p>' +
+      '<div class="chips">' + (window.claude && window.claude.use ? '' : '<button class="chip outline" data-act="bkdl">تنزيل نسخة</button>') + '<button class="chip outline" data-act="bkfile">استرجاع من ملف</button>' +
+      '<button class="chip outline" data-act="bkcopy">نسخ كنص</button><button class="chip outline" data-act="bkpaste">لصق نص</button></div>' + area + '</section>';
+  }
+  function downloadBackup() {
+    var a = document.createElement('a'), url = URL.createObjectURL(new Blob([backupText()], { type: 'application/json' }));
+    a.href = url; a.download = 'baity-backup-' + iso(new Date()) + '.json'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    toast('اتنزّلت النسخة الاحتياطية');
+  }
+
+  /* ====================== render ====================== */
+  var appEl = document.getElementById('app'), navEl = document.getElementById('nav'), overlayEl = document.getElementById('overlay');
+  var TAB_VIEWS = {
+    house: { clean: viewClean, plan: viewPlan, laundry: viewLaundry, stock: viewStock, maint: viewMaint, organize: viewOrganize, rooms: viewRooms },
+    kitchen: { meals: viewMeals, bank: viewBank, shop: viewShop }
+  };
+  function tabsHtml(sec) {
+    var t = SECTIONS[sec].tabs;
+    return '<div class="tabs" role="tablist" aria-label="أقسام ' + SECTIONS[sec].label + '">' + t.map(function (x) { return '<button class="tab" role="tab" aria-selected="' + (x[0] === ui.tabs[sec]) + '" data-act="tab" data-id="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>';
+  }
+  function body() {
+    var s = ui.sec;
+    if (s === 'home') return viewHome();
+    if (s === 'house' || s === 'kitchen') return tabsHtml(s) + (TAB_VIEWS[s][ui.tabs[s]] || viewClean)();
+    if (s === 'money') return viewMoney();
+    if (s === 'life') return tabsHtml(s) + viewLife();
+    if (s === 'kids') return viewKids();
+    if (s === 'bags') return viewBags();
+    return viewMe();
+  }
+  function renderNav() {
+    var main = ['home', 'house', 'kitchen', 'money'], onMore = ['kids', 'life', 'bags', 'me'].indexOf(ui.sec) > -1;
+    navEl.innerHTML = '<div class="nav-in">' + main.map(function (k) { return '<button data-act="sec" data-id="' + k + '"' + (ui.sec === k ? ' aria-current="page"' : '') + '>' + NAV_ICON[k] + SECTIONS[k].label + '</button>'; }).join('') +
+      '<button data-act="more"' + (onMore ? ' aria-current="page"' : '') + '>' + I.more + 'المزيد</button></div>';
+    overlayEl.innerHTML = ui.sheet ? '<div class="scrim" data-act="closesheet"><div class="sheet" role="dialog" aria-label="المزيد"><div class="grab"></div>' +
+      ['kids', 'life', 'bags', 'me'].map(function (k) { return '<button class="sheet-item" data-act="sec" data-id="' + k + '"' + (ui.sec === k ? ' aria-current="page"' : '') + '>' + NAV_ICON[k] + SECTIONS[k].label + '</button>'; }).join('') + '</div></div>' : '';
+  }
+  function render() {
+    var ae = document.activeElement, fk = null, ss = null, se = null;
+    if (ae && ae.dataset && (ae.dataset.bind || ae.dataset.draft)) {
+      fk = ae.dataset.bind ? ['data-bind', ae.dataset.bind] : ['data-draft', ae.dataset.draft];
+      try { ss = ae.selectionStart; se = ae.selectionEnd; } catch (e) {}
+    }
+    if (ui.focus) { fk = ['data-draft', ui.focus]; ss = se = null; ui.focus = ''; }
+    appEl.innerHTML = body();
+    renderNav();
+    if (fk) {
+      var el = appEl.querySelector('[' + fk[0] + '="' + fk[1].replace(/"/g, '\\"') + '"]');
+      if (el) { el.focus(); try { if (ss != null) el.setSelectionRange(ss, se); } catch (e) {} }
+    }
+  }
+  function toast(msg) {
+    var t = document.getElementById('toast'); t.textContent = msg; t.hidden = false;
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 2600);
+  }
+  function go(sec, tab) {
+    ui.sec = sec; if (tab) ui.tabs[sec] = tab; ui.edit = null; ui.sheet = false; ui.confirm = ''; saveUi(); window.scrollTo(0, 0);
+  }
+
+  /* ====================== forms ====================== */
+  var FORMS = {
+    task: function (arg, f) { if (!f.t) return false; list(arg).push({ id: uid(), t: f.t, d: null }); },
+    room: function (arg, f) { ui.edit = null; if (!f.t) return true; var r = { id: 'r' + uid(), name: f.t }; S.clean.rooms.push(r); ui.room = r.id; saveUi(); },
+    stock: function (arg, f) { if (!f.t) return false; S.stock.push({ id: uid(), name: f.t, cat: f.cat, st: 'ok' }); },
+    maint: function (arg, f) { if (!f.t) return false; S.maint.push({ id: uid(), t: f.t, every: +f.every || 6, last: iso(new Date()) }); },
+    orgsec: function (arg, f) { if (!f.t) return false; S.organize.push({ id: 'o' + uid(), title: f.t, items: [] }); },
+    bank: function (arg, f) { if (!f.t) return false; S.bank.push({ id: uid(), name: f.t, cat: f.cat, min: toNum(f.min) || 20 }); },
+    shop: function (arg, f) { if (!f.t) return false; S.shop.push({ id: uid(), name: f.t, cat: f.cat, price: toNum(f.price), done: false }); },
+    fixed: function (arg, f) { if (!f.t) return false; S.fin.fixed.push({ id: uid(), t: f.t, amt: toNum(f.amt) }); },
+    exp: function (arg, f) {
+      if (!f.t || !toNum(f.amt)) return false;
+      var d = new Date(), key = monthKey(), dd = key === realMonthKey() ? iso(d) : key + '-01';
+      S.fin.expenses.push({ id: uid(), t: f.t, amt: toNum(f.amt), cat: f.cat, date: dd });
+    },
+    bill: function (arg, f) { if (!f.t) return false; S.fin.bills.push({ id: uid(), t: f.t, amt: toNum(f.amt), day: Math.min(31, Math.max(1, toNum(f.day) || 1)), paid: '' }); },
+    sub: function (arg, f) { if (!f.t) return false; S.fin.subs.push({ id: uid(), t: f.t, amt: toNum(f.amt) }); },
+    goal: function (arg, f) { if (!f.t) return false; S.fin.goals.push({ id: uid(), t: f.t, saved: 0, target: toNum(f.target) || 1000 }); },
+    dep: function (arg, f) { var g = findId(S.fin.goals, arg), a = toNum(f.amt); if (!g || !a) return false; g.saved += a; },
+    kidexp: function (arg, f) { var k = findId(S.kids, ui.kid); if (!k || !f.t) return false; k.exp.push({ id: uid(), t: f.t, amt: toNum(f.amt) }); },
+    cal: function (arg, f) { if (!f.t) return false; (S.life.cal[ui.cd] = S.life.cal[ui.cd] || []).push({ id: uid(), t: f.t }); },
+    event: function (arg, f) {
+      if (!f.t || !f.date) return false; var p = f.date.split('-'); S.life.events.push({ id: uid(), t: f.t, m: +p[1] - 1, d: +p[2] });
+    },
+    bag: function (arg, f) { ui.edit = null; if (!f.t) return true; var b = { id: 'b' + uid(), name: f.t, items: [] }; S.bags.push(b); ui.bag = b.id; },
+    deep: function (arg, f) { if (!f.t) return false; list('deep.' + arg).push({ id: uid(), t: f.t, pri: PRI_CODE[f.pri] || 'mid', st: 'todo', note: '' }); },
+    deeproom: function (arg, f) {
+      if (!f.t) return false; var r = { id: 'r' + uid(), name: f.t }; S.clean.rooms.push(r); S.deep[r.id] = [];
+      ui.rp = r.id; ui.df = 'all'; ui.dp = 'all'; saveUi(); window.scrollTo(0, 0);
+    }
+  };
+  document.addEventListener('submit', function (e) {
+    var form = e.target.closest('[data-form]'); if (!form) return;
+    e.preventDefault();
+    var id = form.dataset.form, ix = id.indexOf(':'), type = ix > -1 ? id.slice(0, ix) : id, arg = ix > -1 ? id.slice(ix + 1) : '';
+    var f = {}; new FormData(form).forEach(function (v, k) { f[k] = String(v).trim(); });
+    var r = FORMS[type](arg, f);
+    if (r === false) return;
+    Object.keys(ui.drafts).forEach(function (k) { if (k.indexOf(id + ':') === 0 || k.indexOf(type + ':') === 0 || (type === 'dep' && k.indexOf('dep' + arg + ':') === 0)) delete ui.drafts[k]; });
+    ui.focus = id + ':t';
+    if (type === 'dep' || type === 'event' || type === 'exp' || type === 'shop' || type === 'bill' || type === 'bank' || type === 'goal' || type === 'stock' || type === 'maint' || type === 'room' || type === 'bag') ui.focus = '';
+    save(); render();
+  });
+
+  /* ====================== actions ====================== */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]');
+    if (!b) { if (ui.confirm) { ui.confirm = ''; render(); } return; }
+    if (b.classList.contains('scrim') && e.target !== b) return;
+    var a = b.dataset.act, id = b.dataset.id, D_ = b.dataset;
+    if (ui.confirm && !KEEP_CONFIRM[a]) ui.confirm = '';
+    var changed = false;
+    switch (a) {
+      case 'sec': go(id); break;
+      case 'go': go(D_.sec, D_.tab); break;
+      case 'more': ui.sheet = true; break;
+      case 'closesheet': ui.sheet = false; break;
+      case 'tab': ui.tabs[ui.sec] = id; ui.edit = null; ui.placing = ''; ui.et = ''; if (id === 'rooms') ui.rp = null; saveUi(); break;
+      case 'edit': ui.edit = ui.edit === D_.key ? null : D_.key; break;
+      case 'room': ui.room = id; saveUi(); break;
+      case 'freq': ui.freq = id; saveUi(); break;
+      case 'day': ui.day = +id; break;
+      case 'addroom': ui.edit = 'addroom'; ui.focus = 'room:t'; break;
+      case 'delroom':
+        S.clean.rooms = S.clean.rooms.filter(function (r) { return r.id !== id; }); ui.room = S.clean.rooms[0].id; ui.edit = null; saveUi(); changed = true; break;
+      case 'toggle': {
+        var t = findId(list(D_.path), id), pk = D_.pk;
+        if (t) { if (pk === 'once') t.d = !t.d; else t.d = t.d === pk ? null : pk; changed = true; }
+        break;
+      }
+      case 'del': { var L = list(D_.path), i = L.findIndex(function (x) { return x.id === id; }); if (i > -1) { L.splice(i, 1); changed = true; } break; }
+      case 'newweek': S.laundry.week.forEach(function (t) { t.d = null; }); changed = true; toast('بدأنا أسبوع جديد'); break;
+      case 'stock': { var s = findId(S.stock, id); if (s) { s.st = D_.st; syncStock(s); changed = true; } break; }
+      case 'sdel': S.stock = S.stock.filter(function (x) { return x.id !== id; }); S.shop = S.shop.filter(function (x) { return x.stockId !== id; }); changed = true; break;
+      case 'mdone': { var m = findId(S.maint, id); if (m) { m.last = iso(new Date()); changed = true; toast('اتسجّلت الصيانة'); } break; }
+      case 'mdel': S.maint = S.maint.filter(function (x) { return x.id !== id; }); changed = true; break;
+      case 'place': ui.placing = ui.placing === id ? '' : id; ui.pd = todayIdx(); ui.pm = 'l'; break;
+      case 'pday': ui.pd = +id; break;
+      case 'pmeal': ui.pm = id; break;
+      case 'placeok': {
+        var bk = findId(S.bank, id); if (bk) { (S.meals[ui.pd] = S.meals[ui.pd] || { b: '', l: '', d: '' })[ui.pm] = bk.name; ui.placing = ''; changed = true; toast('اتحطت في ' + DAYS[ui.pd] + ' · ' + MEALS.filter(function (x) { return x[0] === ui.pm; })[0][1]); }
+        break;
+      }
+      case 'bdel': S.bank = S.bank.filter(function (x) { return x.id !== id; }); changed = true; break;
+      case 'shopck': { var it = findId(S.shop, id); if (it) { it.done = !it.done; changed = true; } break; }
+      case 'shopdel': {
+        var si = findId(S.shop, id); if (si && si.stockId) { var st = findId(S.stock, si.stockId); if (st) st.st = 'ok'; }
+        S.shop = S.shop.filter(function (x) { return x.id !== id; }); changed = true; break;
+      }
+      case 'shopdone': {
+        var bought = S.shop.filter(function (x) { return x.done; });
+        if (!bought.length) { toast('علّمي الأول على اللي اشتريتيه'); break; }
+        var tot = sum(bought, function (x) { return x.price; });
+        if (tot > 0) S.fin.expenses.push({ id: uid(), t: 'مشتريات السوق', amt: tot, cat: 'سوق', date: iso(new Date()) });
+        bought.forEach(function (x) { if (x.stockId) { var q = findId(S.stock, x.stockId); if (q) q.st = 'ok'; } });
+        S.shop = S.shop.filter(function (x) { return !x.done; }); changed = true;
+        toast(tot > 0 ? 'اتسجّل مصروف ' + money(tot) + ' جنيه' : 'اتشالت من اللستة ورجعت متوفر'); break;
+      }
+      case 'mprev': ui.fm--; if (ui.fm < 0) { ui.fm = 11; ui.fy--; } break;
+      case 'mnext': ui.fm++; if (ui.fm > 11) { ui.fm = 0; ui.fy++; } break;
+      case 'fixdel': S.fin.fixed = S.fin.fixed.filter(function (x) { return x.id !== id; }); changed = true; break;
+      case 'expdel': S.fin.expenses = S.fin.expenses.filter(function (x) { return x.id !== id; }); changed = true; break;
+      case 'billpay': { var bl = findId(S.fin.bills, id); if (bl) { bl.paid = bl.paid === monthKey() ? '' : monthKey(); changed = true; } break; }
+      case 'billdel': S.fin.bills = S.fin.bills.filter(function (x) { return x.id !== id; }); changed = true; break;
+      case 'subdel': S.fin.subs = S.fin.subs.filter(function (x) { return x.id !== id; }); changed = true; break;
+      case 'goaldel': S.fin.goals = S.fin.goals.filter(function (x) { return x.id !== id; }); changed = true; break;
+      case 'kid': ui.kid = id; ui.confirm = ''; break;
+      case 'addkid': { var nk = { id: 'k' + uid(), name: 'طفل جديد', school: '', grade: '', clothes: '', shoe: '', bd: '', exp: [] }; S.kids.push(nk); ui.kid = nk.id; changed = true; break; }
+      case 'askdelkid': ui.confirm = 'kid'; break;
+      case 'delkid': S.kids = S.kids.filter(function (x) { return x.id !== ui.kid; }); ui.kid = S.kids[0] && S.kids[0].id; ui.confirm = ''; changed = true; break;
+      case 'kexpdel': { var kk = findId(S.kids, ui.kid); if (kk) kk.exp = kk.exp.filter(function (x) { return x.id !== id; }); changed = true; break; }
+      case 'bag': ui.bag = id; ui.confirm = ''; ui.edit = null; break;
+      case 'addbag': ui.edit = 'addbag'; ui.focus = 'bag:t'; break;
+      case 'askdelbag': ui.confirm = 'bag'; break;
+      case 'delbag': S.bags = S.bags.filter(function (x) { return x.id !== ui.bag; }); ui.bag = S.bags[0] && S.bags[0].id; ui.confirm = ''; changed = true; break;
+      case 'bagempty': { var bg = findId(S.bags, ui.bag); if (bg) bg.items.forEach(function (x) { x.d = false; }); changed = true; break; }
+      case 'bagall': { var bg2 = findId(S.bags, ui.bag); if (bg2) bg2.items.forEach(function (x) { x.d = true; }); changed = true; break; }
+      case 'clearDone': S.life.remember = S.life.remember.filter(function (x) { return !x.d; }); changed = true; break;
+      case 'cprev': ui.cm--; if (ui.cm < 0) { ui.cm = 11; ui.cy--; } break;
+      case 'cnext': ui.cm++; if (ui.cm > 11) { ui.cm = 0; ui.cy++; } break;
+      case 'calday': ui.cd = D_.k; break;
+      case 'caldel': { var arr = S.life.cal[ui.cd] || []; S.life.cal[ui.cd] = arr.filter(function (x) { return x.id !== id; }); if (!S.life.cal[ui.cd].length) delete S.life.cal[ui.cd]; changed = true; break; }
+      case 'evdel': S.life.events = S.life.events.filter(function (x) { return x.id !== id; }); changed = true; break;
+      case 'cup': {
+        var dk = periodKey('daily'), n = +D_.i + 1, cur = S.me.water.k === dk ? S.me.water.n : 0;
+        S.me.water = { k: dk, n: cur === n ? n - 1 : n }; changed = true; break;
+      }
+      case 'rp': ui.sec = 'house'; ui.tabs.house = 'rooms'; ui.rp = id; ui.edit = null; ui.et = ''; ui.confirm = ''; ui.df = 'all'; ui.dp = 'all'; ui.sheet = false; saveUi(); window.scrollTo(0, 0); break;
+      case 'rback': ui.rp = null; ui.et = ''; ui.edit = null; ui.confirm = ''; saveUi(); window.scrollTo(0, 0); break;
+      case 'dst': { var dt = findId(list('deep.' + ui.rp), id); if (dt) { dt.st = D_.st; changed = true; } break; }
+      case 'dpri': { var dt2 = findId(list('deep.' + ui.rp), id); if (dt2) { dt2.pri = D_.pri; changed = true; } break; }
+      case 'dedit': ui.et = ui.et === id ? '' : id; ui.confirm = ''; break;
+      case 'askddel': ui.confirm = 'd:' + id; break;
+      case 'ddel': { var dl = list('deep.' + ui.rp), di = dl.findIndex(function (x) { return x.id === id; }); if (di > -1) dl.splice(di, 1); ui.et = ''; ui.confirm = ''; changed = true; break; }
+      case 'bkdl': downloadBackup(); break;
+      case 'bkfile': document.getElementById('bkfile').click(); break;
+      case 'bkcopy':
+        ui.bk = ui.bk === 'copy' ? '' : 'copy';
+        if (ui.bk === 'copy') { try { navigator.clipboard.writeText(backupText()).then(function () { toast('اتنسخ النص'); }, function () { toast('انسخي النص من الخانة بإيدك'); }); } catch (e) { toast('انسخي النص من الخانة بإيدك'); } }
+        break;
+      case 'bkpaste': ui.bk = ui.bk === 'paste' ? '' : 'paste'; ui.confirm = ''; break;
+      case 'bkask': {
+        var okb = null; try { okb = parseBackup(D('bk:t')); } catch (e) {}
+        if (okb) ui.confirm = 'bk'; else toast('النص ده مش نسخة احتياطية من البلانر');
+        break;
+      }
+      case 'bkapply': {
+        var nb = null; try { nb = parseBackup(D('bk:t')); } catch (e) {}
+        if (!nb) { ui.confirm = ''; toast('النص ده مش نسخة احتياطية من البلانر'); break; }
+        S = nb; delete ui.drafts['bk:t']; ui.bk = ''; ui.confirm = ''; ui.rp = null; ui.edit = null; ui.et = '';
+        if (!findId(S.clean.rooms, ui.room)) ui.room = S.clean.rooms[0].id;
+        saveUi(); changed = true; toast('اتسترجعت البيانات'); break;
+      }
+      case 'dflt': ui.df = id; break;
+      case 'dpf': ui.dp = id; break;
+      case 'askdclear': ui.confirm = 'clear'; break;
+      case 'dclear': S.deep[ui.rp] = list('deep.' + ui.rp).filter(function (x) { return x.st !== 'done'; }); ui.confirm = ''; changed = true; break;
+      case 'askdelroomx': ui.confirm = 'room'; break;
+      case 'delroomx': {
+        var rid = ui.rp;
+        S.clean.rooms = S.clean.rooms.filter(function (x) { return x.id !== rid; }); delete S.deep[rid];
+        Object.keys(S.clean.tasks).forEach(function (k) { if (k.indexOf(rid + '|') === 0) delete S.clean.tasks[k]; });
+        if (ui.room === rid) ui.room = S.clean.rooms[0].id;
+        ui.rp = null; ui.edit = null; ui.confirm = ''; saveUi(); changed = true; break;
+      }
+      default: return;
+    }
+    if (changed) save();
+    render();
+  });
+
+  document.addEventListener('input', function (e) {
+    var el = e.target;
+    if (el.dataset.draft) { ui.drafts[el.dataset.draft] = el.value; }
+    if (el.dataset.bind) {
+      var v = el.dataset.num ? toNum(el.value) : el.value;
+      setPath(el.dataset.bind, v); save();
+      if (el.dataset.rr && !(el.dataset.num && /[.,٫]$/.test(el.value))) render();
+    }
+  });
+  document.addEventListener('change', function (e) {
+    var el = e.target;
+    if (el.id !== 'bkfile' || !el.files || !el.files[0]) return;
+    var fr = new FileReader();
+    fr.onload = function () { ui.drafts['bk:t'] = String(fr.result); ui.bk = 'paste'; ui.confirm = ''; render(); toast('اتقرا الملف — اضغطي استرجاع'); };
+    fr.readAsText(el.files[0]); el.value = '';
+  });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) render(); });
+
+  if (migratedLocal) save();
+  render();
+})();
+</script>
+<script src="pwa.js" defer></script>
+</body>
+</html>
