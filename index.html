@@ -5,8 +5,8 @@
 <title>بلانر بيتي</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="بلانر رقمي للبيت: تنظيف، مطبخ، ميزانية، أطفال ومواعيد — بالعربي.">
-<meta name="theme-color" content="#eff3f1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1613" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFF0F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E1218" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="بلانر بيتي">
@@ -18,54 +18,63 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* Layout: phone-width column. Sticky pill tabs per section, white cards on a cool sage ground, fixed bottom nav with a "more" sheet. */
+/* Layout: phone-width column. Sticky pill tabs per section, white cards on a blush ground, fixed bottom nav with a "more" sheet.
+   Identity: feminine rose. Palette: bg #FFF0F5 · pastel #F8C8DC · pink #E875A5 · rose #C95D83 · cards #FFF · champagne #E8C985 · text #593746.
+   --accent / --hero are deepened roses so small text on them stays >= 4.5:1 (WCAG AA); the exact brand pink/rose are used for large and decorative areas. */
 :root {
-  --bg: #eff3f1;
-  --surface: #ffffff;
-  --ink: #1d2b26;
-  --muted: #7a8a83;
-  --chip: #e4eae7;
-  --chip-2: #cbd6d1;
-  --line: #dfe5e2;
-  --accent: #1b5e50;
-  --accent-ink: #ffffff;
-  --tint: #dfeee7;
-  --box: #f6f8f7;
-  --box-line: #d5ddd9;
-  --mint: #d8eee4;
-  --mint-ink: #25483d;
-  --note-bg: #f1e3ca;
-  --note-ink: #7b5b2b;
-  --amber: #b8801f;
-  --amber-bg: #f6e7c8;
-  --ok: #2d8a64;
-  --bad: #b5483b;
-  --rose: #a8465f;
-  --rose-bg: #f8dde4;
-  --rose-ink: #8a3550;
-  --rose-line: #f0cfd8;
-  --hero: #1d6a5c;
-  --hero-2: #16574b;
-  --shadow: rgba(27, 94, 80, 0.45);
+  --bg: #FFF0F5;
+  --surface: #FFFFFF;
+  --ink: #593746;
+  --muted: #7D5C6B;
+  --chip: #FCE3EC;
+  --chip-2: #F8C8DC;
+  --line: #F6DCE7;
+  --accent: #A8416A;
+  --accent-ink: #FFFFFF;
+  --tint: #FDE7F0;
+  --box: #FFF7FA;
+  --box-line: #E8BBCD;
+  --mint: #FCE4EE;
+  --mint-ink: #593746;
+  --note-bg: #FBF0D5;
+  --note-ink: #6B4D12;
+  --amber: #94651A;
+  --amber-bg: #FBEFD0;
+  --ok: #2A7352;
+  --bad: #B42B33;
+  --rose: #C95D83;
+  --rose-bg: #F8C8DC;
+  --rose-ink: #6B2A47;
+  --rose-line: #F3B9CF;
+  --hero: #A53F68;
+  --hero-2: #8A3157;
+  --gold: #E8C985;
+  --pink: #E875A5;
+  --on-fill: #FFFFFF;
+  --shadow: rgba(168, 65, 106, 0.40);
+  --card-shadow: 0 14px 30px -22px rgba(168, 65, 106, 0.45);
+  --scrim: rgba(89, 55, 70, .42);
   --font: 'Cairo', system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0e1613; --surface: #16211d; --ink: #e7efec; --muted: #8fa39b; --chip: #202e29; --chip-2: #36483f;
-    --line: #243530; --accent: #2a8670; --accent-ink: #ffffff; --tint: #1d3a31; --box: #1a2823;
-    --box-line: #31453e; --mint: #1a3a30; --mint-ink: #cfe8dd; --note-bg: #3a2f1c; --note-ink: #e4c991;
-    --amber: #d6a047; --amber-bg: #3b3019; --ok: #3aa377; --bad: #e5897c; --rose: #c45d79;
-    --rose-bg: #3d2430; --rose-ink: #f0b6c6; --rose-line: #583543; --hero: #174d43; --hero-2: #103a33;
-    --shadow: rgba(0, 0, 0, 0.55); color-scheme: dark;
+    --bg: #1E1218; --surface: #2A1A23; --ink: #FBE6EE; --muted: #CDA9B8; --chip: #3A2531; --chip-2: #52364A;
+    --line: #3D2833; --accent: #F08DB6; --accent-ink: #2B1220; --tint: #40243A; --box: #251720;
+    --box-line: #5A3C4C; --mint: #3A2230; --mint-ink: #F8D7E5; --note-bg: #3A2F1C; --note-ink: #EBD091;
+    --amber: #E8C985; --amber-bg: #3B3019; --ok: #7FD1A6; --bad: #FF9AA2; --rose: #E27BA2;
+    --rose-bg: #4A2437; --rose-ink: #F8C8DC; --rose-line: #6B3A52; --hero: #8A3A5E; --hero-2: #5E2742;
+    --gold: #E8C985; --pink: #E875A5; --on-fill: #2B1220;
+    --shadow: rgba(0, 0, 0, 0.55); --card-shadow: 0 14px 30px -22px rgba(0, 0, 0, 0.7); --scrim: rgba(10, 4, 8, .6); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0e1613; --surface: #16211d; --ink: #e7efec; --muted: #8fa39b; --chip: #202e29; --chip-2: #36483f;
-  --line: #243530; --accent: #2a8670; --accent-ink: #ffffff; --tint: #1d3a31; --box: #1a2823;
-  --box-line: #31453e; --mint: #1a3a30; --mint-ink: #cfe8dd; --note-bg: #3a2f1c; --note-ink: #e4c991;
-  --amber: #d6a047; --amber-bg: #3b3019; --ok: #3aa377; --bad: #e5897c; --rose: #c45d79;
-  --rose-bg: #3d2430; --rose-ink: #f0b6c6; --rose-line: #583543; --hero: #174d43; --hero-2: #103a33;
-  --shadow: rgba(0, 0, 0, 0.55); color-scheme: dark;
+  --bg: #1E1218; --surface: #2A1A23; --ink: #FBE6EE; --muted: #CDA9B8; --chip: #3A2531; --chip-2: #52364A;
+  --line: #3D2833; --accent: #F08DB6; --accent-ink: #2B1220; --tint: #40243A; --box: #251720;
+  --box-line: #5A3C4C; --mint: #3A2230; --mint-ink: #F8D7E5; --note-bg: #3A2F1C; --note-ink: #EBD091;
+  --amber: #E8C985; --amber-bg: #3B3019; --ok: #7FD1A6; --bad: #FF9AA2; --rose: #E27BA2;
+  --rose-bg: #4A2437; --rose-ink: #F8C8DC; --rose-line: #6B3A52; --hero: #8A3A5E; --hero-2: #5E2742;
+  --gold: #E8C985; --pink: #E875A5; --on-fill: #2B1220;
+  --shadow: rgba(0, 0, 0, 0.55); --card-shadow: 0 14px 30px -22px rgba(0, 0, 0, 0.7); --scrim: rgba(10, 4, 8, .6); color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -109,7 +118,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 }
 .chip.room[aria-pressed="true"] { background: var(--tint); border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .chip.freq[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
-.chip .cnt { font-size: 13px; opacity: .85; font-variant-numeric: tabular-nums; }
+.chip .cnt { font-size: 13px; opacity: 1; font-variant-numeric: tabular-nums; }
 .chip.danger { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 35%, transparent); background: var(--surface); }
 .chip.outline { background: var(--surface); border-color: var(--box-line); color: var(--ink); font-weight: 600; }
 .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
@@ -139,7 +148,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   width: 100%; min-width: 0; height: 52px; padding: 0 16px; border-radius: 17px; border: 1px solid var(--box-line);
   background: var(--surface); outline: none; appearance: none; -webkit-appearance: none;
 }
-.inp::placeholder { color: var(--muted); opacity: .85; }
+.inp::placeholder { color: var(--muted); opacity: 1; }
 .inp:focus { border-color: var(--accent); }
 select.inp {
   padding-inline-end: 38px;
@@ -212,7 +221,7 @@ select.inp {
 .nav button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 2px; border-radius: 16px; color: var(--muted); font-size: 12.5px; font-weight: 600; }
 .nav button svg { width: 24px; height: 24px; }
 .nav button[aria-current="page"] { color: var(--accent); background: var(--tint); }
-.scrim { position: fixed; inset: 0; z-index: 40; background: rgba(10, 20, 17, .45); display: flex; align-items: flex-end; justify-content: center; }
+.scrim { position: fixed; inset: 0; z-index: 40; background: var(--scrim); display: flex; align-items: flex-end; justify-content: center; }
 .sheet {
   width: 100%; max-width: 520px; background: var(--surface); border-radius: 28px 28px 0 0; padding: 12px 14px;
   padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
@@ -235,14 +244,14 @@ select.inp {
 .hero .pat { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero-in { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 22px 20px; }
 .hero-txt { min-width: 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
-.hello { font-size: 15px; opacity: .85; }
+.hello { font-size: 15px; opacity: .92; }
 .hero h1 { margin: 0; font-size: 22px; line-height: 1.3; font-weight: 700; }
 .hero .pill { background: rgba(255, 255, 255, .16); border-radius: 99px; padding: 6px 16px; font-size: 15px; font-weight: 600; }
 .ring { position: relative; width: 98px; height: 98px; flex: none; }
 .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .ring .lab { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.25; }
 .ring b { font-size: 22px; font-variant-numeric: tabular-nums; }
-.ring small { font-size: 11.5px; opacity: .9; }
+.ring small { font-size: 11.5px; opacity: 1; }
 .agenda-title { display: flex; align-items: baseline; justify-content: space-between; margin-top: 6px; }
 .agenda-title h2 { margin: 0; font-size: 24px; font-weight: 700; }
 .group { padding-block: 4px; }
@@ -260,9 +269,9 @@ select.inp {
 /* stock */
 .seg { display: flex; flex-wrap: wrap; gap: 8px; }
 .seg button { padding: 7px 18px; border-radius: 14px; background: var(--chip); color: var(--muted); font-weight: 500; }
-.seg button.s-ok[aria-pressed="true"] { background: var(--ok); color: #fff; font-weight: 600; }
-.seg button.s-low[aria-pressed="true"] { background: var(--amber); color: #fff; font-weight: 600; }
-.seg button.s-out[aria-pressed="true"] { background: var(--bad); color: #fff; font-weight: 600; }
+.seg button.s-ok[aria-pressed="true"] { background: var(--ok); color: var(--on-fill); font-weight: 600; }
+.seg button.s-low[aria-pressed="true"] { background: var(--amber); color: var(--on-fill); font-weight: 600; }
+.seg button.s-out[aria-pressed="true"] { background: var(--bad); color: var(--on-fill); font-weight: 600; }
 .item-block { padding-block: 14px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
 .item-block:last-child { border-bottom: 0; }
 .item-name { font-size: 20px; font-weight: 700; }
@@ -309,7 +318,7 @@ table.meals { border-collapse: separate; border-spacing: 8px 10px; min-width: 10
 .ex-row .a { font-weight: 700; font-variant-numeric: tabular-nums; }
 .badge { font-size: 12.5px; font-weight: 700; padding: 2px 12px; border-radius: 99px; background: var(--chip); color: var(--muted); white-space: nowrap; }
 .badge.warn { background: var(--amber-bg); color: var(--note-ink); }
-.badge.late { background: var(--bad); color: #fff; }
+.badge.late { background: var(--bad); color: var(--on-fill); }
 .mini-btn { padding: 8px 16px; border-radius: 12px; background: var(--tint); color: var(--accent); font-weight: 700; flex: none; }
 .bar { height: 10px; border-radius: 99px; background: var(--chip); overflow: hidden; }
 .bar > i { display: block; height: 100%; border-radius: 99px; background: var(--ck, var(--accent)); }
@@ -329,7 +338,7 @@ table.meals { border-collapse: separate; border-spacing: 8px 10px; min-width: 10
 .kid-head .sub { color: var(--muted); font-size: 15px; }
 .xbtn { color: var(--muted); width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; align-self: flex-start; }
 .xbtn svg { width: 20px; height: 20px; }
-.xbtn.confirm { color: #fff; background: var(--bad); width: auto; padding: 0 14px; font-size: 14px; font-weight: 700; }
+.xbtn.confirm { color: var(--on-fill); background: var(--bad); width: auto; padding: 0 14px; font-size: 14px; font-weight: 700; }
 
 /* bags / calendar / water */
 .cal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -355,7 +364,7 @@ table.meals { border-collapse: separate; border-spacing: 8px 10px; min-width: 10
 /* rooms: deep work */
 .back { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; color: var(--accent); font-weight: 700; padding: 8px 18px 8px 14px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
 .back svg { width: 18px; height: 18px; }
-.hero h1 input { width: 100%; background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .4); border-radius: 12px; color: #fff; font: inherit; font-size: 22px; font-weight: 700; padding: 2px 10px; outline: none; }
+.hero h1 input { width: 100%; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .4); border-radius: 12px; color: #fff; font: inherit; font-size: 22px; font-weight: 700; padding: 2px 10px; outline: none; }
 .hero-txt:has(input) { flex: 1; }
 .pills { display: flex; flex-wrap: wrap; gap: 8px; }
 .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -386,16 +395,30 @@ table.meals { border-collapse: separate; border-spacing: 8px 10px; min-width: 10
 .dt-edit { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 12px; }
 .dt-edit label { color: var(--muted); font-size: 14px; display: flex; flex-direction: column; gap: 6px; }
 .seg button.s-todo[aria-pressed="true"] { background: var(--chip-2); color: var(--ink); font-weight: 600; }
-.seg button.s-doing[aria-pressed="true"] { background: var(--amber); color: #fff; font-weight: 600; }
-.seg button.p-high[aria-pressed="true"] { background: var(--bad); color: #fff; font-weight: 600; }
-.seg button.p-mid[aria-pressed="true"] { background: var(--amber); color: #fff; font-weight: 600; }
-.seg button.p-low[aria-pressed="true"] { background: var(--ok); color: #fff; font-weight: 600; }
+.seg button.s-doing[aria-pressed="true"] { background: var(--amber); color: var(--on-fill); font-weight: 600; }
+.seg button.p-high[aria-pressed="true"] { background: var(--bad); color: var(--on-fill); font-weight: 600; }
+.seg button.p-mid[aria-pressed="true"] { background: var(--amber); color: var(--on-fill); font-weight: 600; }
+.seg button.p-low[aria-pressed="true"] { background: var(--ok); color: var(--on-fill); font-weight: 600; }
 
 /* backup card (me page) */
 textarea.inp { height: auto; min-height: 120px; padding: 12px 14px; resize: vertical; direction: ltr; text-align: left; font-size: 13px; line-height: 1.45; }
 .bk-note { color: var(--muted); font-size: 14.5px; margin: 0 0 14px; }
 .bk-area { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
 .bk-area .chips { margin: 0; }
+
+/* identity layer: soft shadows, champagne details */
+.card, .stat, .link-card { box-shadow: var(--card-shadow); }
+.nav { box-shadow: 0 -14px 32px -24px var(--shadow); }
+.hero { box-shadow: 0 24px 40px -28px var(--shadow); }
+.hero .pill { background: rgba(255, 255, 255, .12); border: 1px solid rgba(232, 201, 133, .65); }
+.bar > i { background: var(--ck, linear-gradient(90deg, var(--rose), var(--accent))); }
+.sheet .grab { background: var(--chip-2); }
+.note { border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent); }
+.note.mint, .note.pinky { border-color: transparent; }
+.inp:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--pink) 28%, transparent); }
+.tab[aria-selected="true"], .btn-wide:not(.outline), .btn-sq { box-shadow: 0 10px 20px -12px var(--shadow); }
+.cal-grid .d i { background: var(--amber); }
+.cal-grid .d i.none { background: transparent; }
 
 @media (prefers-reduced-motion: no-preference) {
   .tab, .chip, .check, .seg button { transition: background-color .15s, color .15s, border-color .15s; }
@@ -837,10 +860,10 @@ textarea.inp { height: auto; min-height: 120px; padding: 12px 14px; resize: vert
     var count = houseRows.length + mealRows.length + remRows.length + bills.length;
     var hr = new Date().getHours(), greet = hr < 12 ? 'صباح الخير' : 'مساء الخير';
     var C = 2 * Math.PI * 40;
-    var hero = '<section class="hero" aria-label="ملخص اليوم"><svg class="pat" aria-hidden="true"><defs><pattern id="lat" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M0 28L28 0l28 28-28 28z" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/><circle cx="28" cy="28" r="9" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/></pattern></defs><rect width="100%" height="100%" fill="url(#lat)"/></svg>' +
+    var hero = '<section class="hero" aria-label="ملخص اليوم"><svg class="pat" aria-hidden="true"><defs><pattern id="lat" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M0 28L28 0l28 28-28 28z" fill="none" stroke="#F8C8DC" stroke-opacity=".22" stroke-width="2"/><circle cx="28" cy="28" r="9" fill="none" stroke="#E875A5" stroke-opacity=".45" stroke-width="2"/></pattern></defs><rect width="100%" height="100%" fill="url(#lat)"/></svg>' +
       '<div class="hero-in"><div class="hero-txt"><span class="hello">' + greet + '</span><h1>' + fullDate() + '</h1>' +
       '<span class="pill">النهارده عندك ' + count + ' حاجة</span><span class="pill">' + done + ' من ' + all.length + ' مهمة تنظيف</span></div>' +
-      '<div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="8"/><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + (pct / 100 * C).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg>' +
+      '<div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="8"/><circle cx="50" cy="50" r="40" fill="none" stroke="#E8C985" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + (pct / 100 * C).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg>' +
       '<div class="lab"><b>' + pct + '%</b><small>إنجاز اليوم</small></div></div></div></section>';
     var g1 = '<div class="group"><div class="g-head"><span class="t">' + I.house + 'البيت</span><button class="open" data-act="go" data-sec="house" data-tab="clean">افتحي ' + I.chevL + '</button></div>' +
       (houseRows.length ? '<ul class="tasks">' + houseRows.map(agendaRow).join('') + '</ul>' : '<div class="empty">مفيش مهام بيت النهارده.</div>') + '</div>';
@@ -938,11 +961,11 @@ textarea.inp { height: auto; min-height: 120px; padding: 12px 14px; resize: vert
     };
   }
   function heroPat() {
-    return '<svg class="pat" aria-hidden="true"><defs><pattern id="lat2" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M0 28L28 0l28 28-28 28z" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/><circle cx="28" cy="28" r="9" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/></pattern></defs><rect width="100%" height="100%" fill="url(#lat2)"/></svg>';
+    return '<svg class="pat" aria-hidden="true"><defs><pattern id="lat2" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M0 28L28 0l28 28-28 28z" fill="none" stroke="#F8C8DC" stroke-opacity=".22" stroke-width="2"/><circle cx="28" cy="28" r="9" fill="none" stroke="#E875A5" stroke-opacity=".45" stroke-width="2"/></pattern></defs><rect width="100%" height="100%" fill="url(#lat2)"/></svg>';
   }
   function ringSvg(pct, label) {
     var C = 2 * Math.PI * 40;
-    return '<div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="8"/><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + (pct / 100 * C).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg><div class="lab"><b>' + pct + '%</b><small>' + label + '</small></div></div>';
+    return '<div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="8"/><circle cx="50" cy="50" r="40" fill="none" stroke="#E8C985" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + (pct / 100 * C).toFixed(1) + ' ' + C.toFixed(1) + '"/></svg><div class="lab"><b>' + pct + '%</b><small>' + label + '</small></div></div>';
   }
   function deepLink(room) {
     var s = deepStats(room.id);
@@ -977,7 +1000,7 @@ textarea.inp { height: auto; min-height: 120px; padding: 12px 14px; resize: vert
         '<label>ملاحظة (اختياري)<input class="inp" type="text" data-rr="1" data-bind="' + path + '.note" value="' + esc(t.note || '') + '" placeholder="مثلاً: محتاجة مزيل دهون"></label>' +
         '<div class="cat-lbl">الأولوية</div><div class="seg" role="group" aria-label="الأولوية">' + PRI.map(function (x) { return '<button class="p-' + x[0] + '" aria-pressed="' + (t.pri === x[0]) + '" data-act="dpri" data-id="' + t.id + '" data-pri="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>' +
         '<div class="chips"><button class="chip freq" aria-pressed="true" data-act="dedit" data-id="' + t.id + '">تم</button>' +
-        (ui.confirm === 'd:' + t.id ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="ddel" data-id="' + t.id + '">تأكيد الحذف</button>' : '<button class="chip danger" data-act="askddel" data-id="' + t.id + '">حذف المهمة</button>') + '</div></div>';
+        (ui.confirm === 'd:' + t.id ? '<button class="chip danger" style="background:var(--bad);color:var(--on-fill)" data-act="ddel" data-id="' + t.id + '">تأكيد الحذف</button>' : '<button class="chip danger" data-act="askddel" data-id="' + t.id + '">حذف المهمة</button>') + '</div></div>';
     }
     return '<li class="dt' + (done ? ' done' : '') + '"><div class="dt-top"><span class="dt-title">' + esc(t.t) + '</span><span class="pri pri-' + t.pri + '">' + PRI_L[t.pri] + '</span></div>' +
       (t.note ? '<p class="dt-note">' + esc(t.note) + '</p>' : '') +
@@ -1000,8 +1023,8 @@ textarea.inp { height: auto; min-height: 120px; padding: 12px 14px; resize: vert
       : '<div class="empty">' + (L.length ? 'مفيش مهام بالفلتر ده.' : 'مفيش مهام شغل عميق في ' + esc(r.name) + ' لسه. ضيفي أول مهمة من تحت.') + '</div>';
     var add = '<section class="card"><div class="sec-title" style="font-size:18px">ضيفي مهمة شغل عميق</div><form data-form="deep:' + r.id + '" class="add-grid" autocomplete="off"><div class="grow">' + inp('deep:' + r.id, 't', 'ضيفي مهمة شغل عميق ' + forRoom(r.name)) + '</div>' +
       sel('deep:' + r.id, 'pri', PRI.map(function (x) { return x[1]; }), 'متوسطة') + '<button class="btn-wide" type="submit" style="min-height:52px">إضافة</button></form></section>';
-    var footBtns = (s.done ? (ui.confirm === 'clear' ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="dclear">تأكيد مسح اللي تم</button>' : '<button class="chip outline" data-act="askdclear">امسحي اللي تم</button>') : '') +
-      (editing && S.clean.rooms.length > 1 ? (ui.confirm === 'room' ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="delroomx">تأكيد حذف الغرفة</button>' : '<button class="chip danger" data-act="askdelroomx">حذف الغرفة</button>') : '');
+    var footBtns = (s.done ? (ui.confirm === 'clear' ? '<button class="chip danger" style="background:var(--bad);color:var(--on-fill)" data-act="dclear">تأكيد مسح اللي تم</button>' : '<button class="chip outline" data-act="askdclear">امسحي اللي تم</button>') : '') +
+      (editing && S.clean.rooms.length > 1 ? (ui.confirm === 'room' ? '<button class="chip danger" style="background:var(--bad);color:var(--on-fill)" data-act="delroomx">تأكيد حذف الغرفة</button>' : '<button class="chip danger" data-act="askdelroomx">حذف الغرفة</button>') : '');
     var foot = footBtns ? '<div class="chips">' + footBtns + '</div>' : '';
     return '<div class="stack" style="padding-top:14px"><div class="outer-head">' + back + editBtn('rpage') + '</div>' + hero.replace('class="hero"', 'class="hero" style="margin-top:0"') + filters + items + add + foot + '</div>';
   }
@@ -1176,7 +1199,7 @@ textarea.inp { height: auto; min-height: 120px; padding: 12px 14px; resize: vert
     if (!b) return '<div class="stack">' + tip + '<div class="chips">' + chips + '</div><div class="empty">ضيفي أول شنطة.</div></div>';
     ui.bag = b.id;
     var done = b.items.filter(function (i) { return i.d; }).length, path = 'bags.' + b.id + '.items';
-    var del = ui.confirm === 'bag' ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="delbag">تأكيد المسح</button>' : '<button class="chip danger" data-act="askdelbag">امسحي الشنطة</button>';
+    var del = ui.confirm === 'bag' ? '<button class="chip danger" style="background:var(--bad);color:var(--on-fill)" data-act="delbag">تأكيد المسح</button>' : '<button class="chip danger" data-act="askdelbag">امسحي الشنطة</button>';
     return '<div class="stack">' + tip + '<div class="chips">' + chips + '</div><section class="card"><div class="sec-head"><div class="sec-title">' + esc(b.name) + '</div>' + editBtn('bag') + '</div>' +
       '<div class="sec-sub">' + done + ' من ' + b.items.length + ' جاهز</div>' + bar(b.items.length ? done / b.items.length * 100 : 0) +
       checklist(path, { edit: 'bag', empty: 'الشنطة فاضية.' }) + addRow('task:' + path, 'ضيفي حاجة للشنطة') +
@@ -1211,7 +1234,7 @@ textarea.inp { height: auto; min-height: 120px; padding: 12px 14px; resize: vert
     } else if (ui.bk === 'paste') {
       area = '<div class="bk-area"><textarea class="inp" rows="6" name="t" data-draft="bk:t" placeholder="الصقي هنا نص النسخة الاحتياطية…" aria-label="نص النسخة الاحتياطية">' + esc(D('bk:t')) + '</textarea>' +
         '<div class="chips">' + (ui.confirm === 'bk'
-          ? '<button class="chip danger" style="background:var(--bad);color:#fff" data-act="bkapply">تأكيد: استبدال بيانات الجهاز ده</button>'
+          ? '<button class="chip danger" style="background:var(--bad);color:var(--on-fill)" data-act="bkapply">تأكيد: استبدال بيانات الجهاز ده</button>'
           : '<button class="chip outline" data-act="bkask">استرجاع</button>') + '</div></div>';
     }
     return '<section class="card"><div class="sec-head"><div class="sec-title">نسخة احتياطية</div></div>' +

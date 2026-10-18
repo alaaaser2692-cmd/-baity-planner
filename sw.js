@@ -1,5 +1,5 @@
 /* Service worker: app shell works offline; Google Fonts are cached after the first online visit. */
-var VERSION = 'baity-f916afb362';
+var VERSION = 'baity-28a1733bbe';
 var SHELL = VERSION + '-shell', FONTS = 'baity-fonts';
 var PRECACHE = ["./", "index.html", "manifest.webmanifest", "pwa.js", "icons/icon.svg", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png"];
 
